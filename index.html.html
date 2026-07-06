@@ -319,6 +319,7 @@ h1{font-size:19px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 <script>
 /* ══════════════ ★ CONFIG ══════════════ */
 const SHEET_CSV_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=0&single=true&output=csv';
+const WEEKLY_CSV_URL = '';
 const BUDGET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=924802887&single=true&output=csv';
 const SCRIPT_URL     = 'https://script.google.com/macros/s/AKfycbysK4eYEcpmvr5cCS-UxcqHU9holAHWxyCiRqxprP-tDt1Eo66XqHx6XMoE98qLZtJt5Q/exec';
 /* ═══════════════════════════════════════ */
@@ -363,7 +364,25 @@ const FALLBACK_BUDGET = [
 ['B28','5.기타','예비비',1000000,0,'투표시스템 포함'],
 ];
 
-let tasks = [], budget = [];
+const FALLBACK_WEEKLY = [
+['W1','B.웹·접수','이메일 접수 수신대장·접수번호 체계 만들기','최지연','','2026-07-08','미완료'],
+['W2','B.웹·접수','필수서류 체크리스트·보완요청 안내 템플릿 초안','최지연','','2026-07-10','미완료'],
+['W3','B.웹·접수','커피쿠폰 이벤트 판별 기준 재설계안 작성','최지연','','2026-07-10','미완료'],
+['W4','D.1차 심사','1차 심사위원·2차 검정위원 후보 리스트 초안','김정현','','2026-07-10','미완료'],
+['W5','A.홍보·모집','홍보영상 진행 상황 점검(승태 컨택)','김정현','','2026-07-08','미완료'],
+['W6','I.행정','주간보고 양식·제출 캘린더 확정','김정현','','2026-07-09','미완료'],
+['W7','E.멘토링·매칭','멘토기업 섭외 메일링 발송','이승헌','','2026-07-07','미완료'],
+['W8','E.멘토링·매칭','메일 회신 관리표(참여 확정 기업) 만들기','이승헌','','2026-07-10','미완료'],
+['W9','G.본 행사','QR 투표 플랫폼 비용 비교표 마무리','이승헌','','2026-07-10','미완료'],
+['W10','A.홍보·모집','대학내일·링커리어 게재 일정 확정','이유빈','','2026-07-08','미완료'],
+['W11','A.홍보·모집','기관별 공문 게시 추적표 작성·미게시 재요청','이유빈','','2026-07-09','미완료'],
+['W12','A.홍보·모집','보도자료 배포 채널·일정 초안','이유빈','','2026-07-10','미완료'],
+['W13','B.웹·접수','사이트 변경 공고문·QR 반영 확인 + 캡처 증빙','최보결','','2026-07-07','미완료'],
+['W14','G.본 행사','오스코 부스 수·VIP룸 견적 확정','최보결','','2026-07-09','미완료'],
+['W15','C.홍보물·디자인','배너 잔여 매체(대학내일 등) 소재 사이즈 전달','최보결','','2026-07-08','미완료'],
+];
+
+let tasks = [], budget = [], weeklyItems = [];
 let prevStatus = {};
 let filterStatus = null, selectedCat = null;
 const $ = id => document.getElementById(id);
@@ -430,6 +449,27 @@ async function load(showToast){
     }).filter(t=>t.id&&t.name);
   }catch(e){ fails.push('과업현황'); }
 
+  if(WEEKLY_CSV_URL){
+    try{
+      const res=await fetch(bust(WEEKLY_CSV_URL));
+      if(!res.ok)throw 0;
+      const body=parseCSV(await res.text()).slice(1);
+      weeklyItems=body.map(r=>{
+        const startStr=(r[4]||'').trim(), endStr=(r[5]||'').trim();
+        return {id:String(r[0]).trim(),cat:(r[1]||'').trim(),name:(r[2]||'').trim(),
+          owner:(r[3]||'').trim(),startStr,endStr,start:parseKDate(startStr),end:parseKDate(endStr),
+          done:(r[6]||'미완료').trim()};
+      }).filter(w=>w.id&&w.name);
+    }catch(e){ fails.push('주간세부업무'); }
+  }else{
+    weeklyItems=FALLBACK_WEEKLY.map(r=>({id:r[0],cat:r[1],name:r[2],owner:r[3],
+      startStr:r[4],endStr:r[5],start:parseKDate(r[4]),end:parseKDate(r[5]),done:r[6]}));
+    try{
+      const saved=JSON.parse(localStorage.getItem('ai-dash-weekly')||'{}');
+      weeklyItems.forEach(w=>{if(saved[w.id])w.done=saved[w.id];});
+    }catch(e){}
+  }
+
   if(BUDGET_CSV_URL){
     try{
       const res=await fetch(bust(BUDGET_CSV_URL));
@@ -479,14 +519,30 @@ function toggleTask(id){
   render();
 }
 
+function toggleWeekly(id){
+  const w=weeklyItems.find(x=>x.id===id);if(!w)return;
+  w.done = w.done==='완료'?'미완료':'완료';
+  if(WEEKLY_CSV_URL){
+    write('주간세부업무',id,{done:w.done},
+      w.done==='완료'?'✅ 세부 할일 완료 — 시트에 기록했어요':'↩️ 미완료로 되돌렸어요');
+  }else{
+    try{
+      const saved=JSON.parse(localStorage.getItem('ai-dash-weekly')||'{}');
+      saved[id]=w.done;localStorage.setItem('ai-dash-weekly',JSON.stringify(saved));
+    }catch(e){}
+    toast(w.done==='완료'?'✅ 완료 (이 기기에만 저장됨)':'↩️ 미완료로 변경');
+  }
+  render();
+}
+
 function taskWeekRow(t){
   const d=t.done==='완료';
   const due=t.endStr?('~'+t.endStr):(t.startStr?(t.startStr+'~'):'');
   return `<div class="todo${d?' is-done':''}">
-    <button class="chk-s${d?' on':''}" aria-label="${d?'완료 해제':'완료 처리'}: ${esc(t.name)}" onclick="toggleTask('${t.id}')">
+    <button class="chk-s${d?' on':''}" aria-label="${d?'완료 해제':'완료 처리'}: ${esc(t.name)}" onclick="toggleWeekly('${t.id}')">
       <svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></svg></button>
     <div><div class="td-text"><span class="who">${esc(t.owner||'미지정')}</span>${esc(t.name)}</div>
-      <div class="td-meta"><span class="td-cat">${esc(t.cat)}</span>${due?'<span class="td-due">'+esc(due)+'</span>':''}${t.next?'<span class="td-next">다음: '+esc(t.next)+'</span>':''}</div>
+      <div class="td-meta"><span class="td-cat">${esc(t.cat)}</span>${due?'<span class="td-due">'+esc(due)+'</span>':''}</div>
     </div></div>`;
 }
 
@@ -513,9 +569,9 @@ function render(){
   $('summary').querySelectorAll('.sum-card').forEach(el=>{
     el.onclick=()=>{filterStatus=(filterStatus===el.dataset.status)?null:el.dataset.status;render();};});
 
-  // 금주 체크리스트 — 시작일·종료일이 이번 주(월~일)와 겹치는 과업
+  // 금주 체크리스트 — 별도 시트(주간세부업무)의 시작일·종료일이 이번 주(월~일)와 겹치는 세부 할일
   const {mon,sun}=weekRange();
-  const weekTasks=tasks.filter(t=>{
+  const weekTasks=weeklyItems.filter(t=>{
     const s=t.start||t.end, e=t.end||t.start;
     if(!s||!e) return false;
     return s<=sun && e>=mon;
@@ -523,14 +579,14 @@ function render(){
   $('week-count').textContent=weekTasks.filter(t=>t.done==='완료').length+'/'+weekTasks.length+' 완료';
   const byCat={};
   weekTasks.forEach(t=>{(byCat[t.cat]=byCat[t.cat]||[]).push(t);});
-  const keys=Object.keys(byCat).sort();
-  $('bygroup').innerHTML=keys.length?keys.map(c=>{
+  const wkeys=Object.keys(byCat).sort();
+  $('bygroup').innerHTML=wkeys.length?wkeys.map(c=>{
     const list=byCat[c];const d=list.filter(t=>t.done==='완료').length;
     return `<div class="g-card">
       <div class="g-title">${esc(c)}<span>${d}/${list.length}</span></div>
       ${list.map(t=>taskWeekRow(t)).join('')}
     </div>`;}).join('')
-    :'<div class="empty">이번 주(월~일)에 마감·진행 예정인 과업이 없어요.<br>과업현황 시트의 시작일·종료일 열을 채워보세요.</div>';
+    :'<div class="empty">이번 주(월~일)에 마감·진행 예정인 세부 할일이 없어요.<br>주간세부업무 시트의 시작일·종료일 열을 채워보세요.</div>';
 
   // 업무별 진행현황: 왼쪽 카테고리
   const cats=[...new Set(tasks.map(t=>t.cat))];
