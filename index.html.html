@@ -9,7 +9,7 @@
 :root{
   --ink:#1B2735; --ink-soft:#5A6B7E;
   --paper:#F1F5F9; --card:#FFFFFF; --line:#DDE5EE;
-  --barn:#1D4E89; --barn-deep:#0F2D54; --hay:#6FBCF5;   /* 파란 테마 */
+  --barn:#1D4E89; --barn-deep:#0F2D54; --hay:#6FBCF5;
   --done:#2E8B57;  --done-bg:#E7F4EC;
   --doing:#2563EB; --doing-bg:#E9F0FE;
   --wait:#6B7280;  --wait-bg:#EEF0F2;
@@ -24,27 +24,29 @@ body{
   font-family:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
   background:var(--paper); color:var(--ink); font-size:15px; line-height:1.55; padding-bottom:60px;
 }
-.wrap{max-width:1080px;margin:0 auto;padding:0 14px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 14px}
 
 /* ── 최상단 헤더 ── */
 header{
   background:linear-gradient(150deg,var(--barn) 0%,var(--barn-deep) 100%);
-  color:#fff; padding:22px 18px 18px; border-bottom:4px solid var(--hay);
+  color:#fff; padding:20px 18px; border-bottom:4px solid var(--hay);
 }
-.head-inner{max-width:1080px;margin:0 auto}
+.head-inner{max-width:1180px;margin:0 auto;display:flex;gap:22px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.head-left{flex:1;min-width:260px}
 .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--hay);font-weight:700;margin-bottom:5px}
-h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
-.dday-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+h1{font-size:19px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
+.dday-row{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
 .dday{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.18);
   border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px}
 .dday b{color:var(--hay);font-weight:800}
-.gate{margin-top:16px}
-.gate-label{display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.85);margin-bottom:6px}
-.gate-label b{color:#fff;font-size:13px}
-.gate-bar{height:14px;border-radius:999px;background:rgba(255,255,255,.15);overflow:hidden;border:1px solid rgba(255,255,255,.2)}
-.gate-fill{height:100%;border-radius:999px;width:0;
-  background:repeating-linear-gradient(-45deg,var(--hay) 0 10px,#9AD1F8 10px 20px);
-  transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.head-right{display:flex;gap:10px;flex:0 0 auto}
+.stat-ring{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);
+  border-radius:14px;padding:12px 18px;text-align:center;min-width:112px}
+.stat-ring .sr-num{font-size:24px;font-weight:800;color:#fff;line-height:1}
+.stat-ring .sr-lbl{font-size:11px;color:rgba(255,255,255,.75);font-weight:600;margin-top:4px}
+.stat-ring .sr-bar{height:5px;border-radius:99px;background:rgba(255,255,255,.18);margin-top:8px;overflow:hidden}
+.stat-ring .sr-fill{height:100%;border-radius:99px;background:var(--hay);width:0;transition:width .6s}
+.stat-ring.budget .sr-fill{background:#8CE0C4}
 
 /* 상태 요약 카운터 */
 .summary{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:14px 0 4px}
@@ -63,22 +65,35 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 .sec-sub{font-size:12px;color:var(--ink-soft)}
 .sec-head::after{content:'';flex:1;height:1px;background:var(--line);align-self:center}
 
-/* ── 상단: 팀원별 금주 할일 ── */
-.members{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
-@media(max-width:900px){
-  .members{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 -14px;padding:0 14px 4px}
-  .members::-webkit-scrollbar{display:none}
-  .member{flex:0 0 78%}
-}
-.member{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);
-  box-shadow:var(--shadow);padding:12px;display:flex;flex-direction:column}
-.m-head{display:flex;align-items:center;gap:8px;margin-bottom:9px}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--barn);color:var(--hay);
-  font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-.m-name{font-size:14px;font-weight:800}
-.m-count{font-size:11.5px;color:var(--ink-soft);font-weight:600}
-.m-count b{color:var(--done)}
+/* ── 상단 좌우 분할(개요 / 체크리스트) ── */
+.top-split{display:grid;grid-template-columns:1fr 1.3fr;gap:12px;align-items:start}
+@media(max-width:900px){ .top-split{grid-template-columns:1fr} }
+.panel{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+.panel-head{padding:12px 14px 10px;border-bottom:1px solid var(--line);
+  font-size:13.5px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
+.panel-head span{font-size:11.5px;color:var(--ink-soft);font-weight:600}
+.scroll-box{overflow-y:auto}
+
+/* 프로젝트 개요 */
+.ov-body{padding:14px;max-height:420px;overflow-y:auto}
+.ov-row{display:flex;gap:10px;padding:9px 0;border-top:1px dashed var(--line)}
+.ov-row:first-child{border-top:none;padding-top:0}
+.ov-key{flex:0 0 78px;font-size:12px;font-weight:800;color:var(--barn)}
+.ov-val{flex:1;font-size:12.5px;color:var(--ink);line-height:1.55;word-break:keep-all}
+.ov-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.ov-tag{background:#EDF3F9;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;color:var(--barn)}
+.ov-highlight{background:#F3F7FB;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin-top:6px;font-size:12px;color:#41506B}
+
+/* 금주 체크리스트(과업별) */
+.checklist-body{padding:10px 12px 12px;max-height:420px;overflow-y:auto}
+.bygroup{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:9px}
+.g-card{background:#FBFCFE;border-radius:12px;border:1px solid var(--line);padding:11px}
+.g-title{font-size:13px;font-weight:800;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.g-title span{font-size:11px;color:var(--ink-soft);font-weight:700}
+.who{display:inline-block;background:var(--barn);color:#fff;border-radius:5px;
+  font-size:10px;font-weight:800;padding:1px 6px;margin-right:4px}
 .todo{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-top:1px dashed var(--line)}
+.todo:first-of-type{border-top:none;padding-top:0}
 .todo.is-done .td-text{text-decoration:line-through;color:var(--ink-soft)}
 .chk-s{flex:0 0 auto;width:22px;height:22px;border-radius:7px;margin-top:1px;
   border:2px solid #BCCBDD;background:#fff;cursor:pointer;
@@ -92,17 +107,11 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 .td-meta{font-size:10.5px;color:var(--ink-soft);margin-top:2px;display:flex;gap:6px;flex-wrap:wrap}
 .td-cat{background:#EDF3F9;border-radius:5px;padding:1px 6px;font-weight:600}
 .td-due{color:var(--risk);font-weight:700}
-.m-empty{font-size:12px;color:var(--ink-soft);padding:10px 0;border-top:1px dashed var(--line)}
+.td-next{color:var(--doing);font-weight:600}
 
-/* ── 중단: 좌우 분할 ── */
+/* ── 하단: 업무별 진행현황(좌우 분할) ── */
 .split{display:grid;grid-template-columns:300px 1fr;gap:12px;align-items:start}
 @media(max-width:900px){ .split{grid-template-columns:1fr} }
-.panel{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
-.panel-head{padding:12px 14px 10px;border-bottom:1px solid var(--line);
-  font-size:13.5px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
-.panel-head span{font-size:11.5px;color:var(--ink-soft);font-weight:600}
-
-/* 왼쪽: 공고기준 과업 리스트 */
 .cat-item{width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--line);
   padding:11px 14px;cursor:pointer;font-family:inherit;display:block}
 .cat-item:last-child{border-bottom:none}
@@ -116,9 +125,7 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 .flag{font-size:10px;font-weight:800;border-radius:5px;padding:1px 6px}
 .flag.f-fail{background:var(--fail-bg);color:var(--fail)}
 .flag.f-risk{background:var(--risk-bg);color:var(--risk)}
-
-/* 오른쪽: 세부과업 진행현황 */
-#panel-right{display:flex;flex-direction:column;max-height:640px}
+#panel-right{display:flex;flex-direction:column;max-height:520px}
 #panel-right .panel-head{position:sticky;top:0;background:var(--card);z-index:2}
 .tasks-body{padding:10px 12px 12px;overflow-y:auto;flex:1}
 .task{border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin-top:9px;
@@ -140,7 +147,7 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 .p-done{background:var(--done-bg);color:var(--done)} .p-doing{background:var(--doing-bg);color:var(--doing)}
 .p-wait{background:var(--wait-bg);color:var(--wait)} .p-fail{background:var(--fail-bg);color:var(--fail)}
 .p-risk{background:var(--risk-bg);color:var(--risk)}
-.t-meta{font-size:12px;color:var(--ink-soft);margin-top:4px}
+.t-meta{font-size:12px;color:var(--ink-soft);margin-top:4px;display:flex;gap:10px;flex-wrap:wrap}
 .t-meta b{color:var(--ink);font-weight:700}
 .t-detail{display:none;margin-top:8px;padding:9px 11px;border-radius:10px;
   background:#F3F7FB;border:1px dashed var(--line);font-size:12.5px;color:#41506B}
@@ -149,15 +156,6 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 .task.open .t-detail{display:block}
 .more{background:none;border:none;color:var(--doing);font-size:12px;font-weight:700;
   padding:4px 0 0;cursor:pointer;font-family:inherit}
-
-/* ── 과업별 금주 할일 ── */
-.bygroup{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:9px}
-.g-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);
-  box-shadow:var(--shadow);padding:12px}
-.g-title{font-size:13.5px;font-weight:800;display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.g-title span{font-size:11.5px;color:var(--ink-soft);font-weight:700}
-.who{display:inline-block;background:var(--barn);color:#fff;border-radius:5px;
-  font-size:10px;font-weight:800;padding:1px 6px;margin-right:4px}
 
 /* ── 최하단: 예산 ── */
 .budget-summary{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);
@@ -173,6 +171,7 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 .bs-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--barn),var(--hay));
   width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
 .bs-note{font-size:11px;color:var(--ink-soft);margin-top:7px;text-align:right}
+.budget-scroll{max-height:440px;overflow-y:auto;padding-right:2px}
 .budget-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:9px}
 .b-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);
   box-shadow:var(--shadow);padding:12px}
@@ -194,7 +193,7 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 .footer-bar{position:fixed;left:0;right:0;bottom:0;z-index:30;
   background:rgba(255,255,255,.94);backdrop-filter:blur(8px);
   border-top:1px solid var(--line);padding:8px 14px calc(8px + env(safe-area-inset-bottom))}
-.fb-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.fb-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .sync-note{font-size:11.5px;color:var(--ink-soft);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sync-note.err{color:var(--fail);font-weight:600}
 .refresh{flex:0 0 auto;background:var(--barn);color:#fff;border:none;border-radius:999px;
@@ -207,23 +206,32 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
   background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:9px 16px;border-radius:999px;
   opacity:0;pointer-events:none;transition:.25s;z-index:40;max-width:88vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(min-width:640px){ h1{font-size:23px} .sum-num{font-size:24px} }
+@media(min-width:640px){ h1{font-size:22px} .sum-num{font-size:24px} }
 </style>
 </head>
 <body>
 
-<!-- ═══ 최상단 ═══ -->
 <header>
   <div class="head-inner">
-    <div class="eyebrow">축산물품질평가원 · 2026.11.17 청주 오스코</div>
-    <h1>제4회 스마트축산 AI 경진대회<br>운영 대시보드</h1>
-    <div class="dday-row">
-      <span class="dday">접수 마감 8.31 <b id="dday-apply">D-00</b></span>
-      <span class="dday">본 행사 11.17 <b id="dday-event">D-00</b></span>
+    <div class="head-left">
+      <div class="eyebrow">축산물품질평가원 · 공고 제2026-104호</div>
+      <h1>제4회 스마트축산 AI 경진대회<br>운영 대시보드</h1>
+      <div class="dday-row">
+        <span class="dday">접수 마감 8.31 <b id="dday-apply">D-00</b></span>
+        <span class="dday">본 행사 11.17 <b id="dday-event">D-00</b></span>
+      </div>
     </div>
-    <div class="gate">
-      <div class="gate-label"><span>전체 과업 완료율</span><b id="gate-pct">0% (0/0)</b></div>
-      <div class="gate-bar"><div class="gate-fill" id="gate-fill"></div></div>
+    <div class="head-right">
+      <div class="stat-ring">
+        <div class="sr-num" id="hr-ready">0%</div>
+        <div class="sr-lbl">준비정도</div>
+        <div class="sr-bar"><div class="sr-fill" id="hr-ready-fill"></div></div>
+      </div>
+      <div class="stat-ring budget">
+        <div class="sr-num" id="hr-budget">0%</div>
+        <div class="sr-lbl">예산사용정도</div>
+        <div class="sr-bar"><div class="sr-fill" id="hr-budget-fill"></div></div>
+      </div>
     </div>
   </div>
 </header>
@@ -231,15 +239,41 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 <div class="wrap">
   <div class="summary" id="summary"></div>
 
-  <!-- ═══ 상단: 팀원별 금주 할일 ═══ -->
-  <div class="sec-head"><span class="sec-title">👥 팀원별 금주 해야할 일</span><span class="sec-sub" id="week-label"></span></div>
-  <div class="members" id="members"></div>
+  <!-- ═══ 상단: 프로젝트 개요 | 금주 체크리스트 ═══ -->
+  <div class="sec-head"><span class="sec-title">🗂 이번 주 현황</span><span class="sec-sub">개요 확인 → 오른쪽에서 이번 주 마감 과업 체크</span></div>
+  <div class="top-split">
+    <div class="panel">
+      <div class="panel-head">📌 프로젝트 개요</div>
+      <div class="ov-body">
+        <div class="ov-row"><div class="ov-key">대회명</div><div class="ov-val">제4회 스마트축산 AI 경진대회</div></div>
+        <div class="ov-row"><div class="ov-key">주최</div><div class="ov-val">축산물품질평가원</div></div>
+        <div class="ov-row"><div class="ov-key">목적</div><div class="ov-val">AI·빅데이터 기술을 활용한 스마트축산 우수사례를 발굴하고, 현장 문제 해결형 알고리즘 개발·확산을 통해 축산업의 지속 가능한 발전을 도모</div></div>
+        <div class="ov-row"><div class="ov-key">접수기간</div><div class="ov-val">2026.7.1(수) ~ 8.31(월), 이메일 접수(smartlivestock@ekape.or.kr)</div></div>
+        <div class="ov-row"><div class="ov-key">본행사</div><div class="ov-val">2026.11.17(화), 청주 오스코 그랜드볼룸(예정)</div></div>
+        <div class="ov-row"><div class="ov-key">공모분야</div><div class="ov-val">
+          <div class="ov-tags">
+            <span class="ov-tag">① 상용화 부문</span>
+            <span class="ov-tag">② 알고리즘 - 기술개발과제</span>
+            <span class="ov-tag">③ 알고리즘 - 지정과제</span>
+          </div>
+        </div></div>
+        <div class="ov-row"><div class="ov-key">참가대상</div><div class="ov-val">상용화: 스마트축산 관련 기업·단체 / 기술개발과제: 전 국민 누구나 / 지정과제: 대학(원)생·농가 등 일반인(기업·단체 제외)</div></div>
+        <div class="ov-row"><div class="ov-key">심사일정</div><div class="ov-val">1차 서면심사(9월 초) → 2차 전문가 검정(10월 중순) → 현장투표·시상식(11.17)</div></div>
+        <div class="ov-row"><div class="ov-key">시상규모</div><div class="ov-val">총 7점 · 2,300만원 (상용화 3점 / 알고리즘 4점, 최고상 농림축산식품부장관상)</div></div>
+        <div class="ov-highlight">💡 문의처: 축산물품질평가원 스마트기반조성처 · 044-410-7312 (이진규 차장)</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">✅ 금주 체크리스트<span id="week-count"></span></div>
+      <div class="checklist-body" id="bygroup"></div>
+    </div>
+  </div>
 
-  <!-- ═══ 중단: 좌우 분할 ═══ -->
-  <div class="sec-head"><span class="sec-title">📋 공고 기준 과업 현황</span><span class="sec-sub">왼쪽에서 선택 → 오른쪽에서 체크</span></div>
+  <!-- ═══ 하단: 업무별 진행현황(좌우 분할) ═══ -->
+  <div class="sec-head"><span class="sec-title">📋 업무별 진행현황</span><span class="sec-sub">왼쪽에서 선택 → 오른쪽에서 체크</span></div>
   <div class="split">
     <div class="panel">
-      <div class="panel-head">공고기준 과업 리스트 <span id="cat-total"></span></div>
+      <div class="panel-head">구분별 리스트 <span id="cat-total"></span></div>
       <div id="cat-list"></div>
     </div>
     <div class="panel" id="panel-right">
@@ -248,12 +282,8 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
     </div>
   </div>
 
-  <!-- ═══ 과업별 금주 할일 ═══ -->
-  <div class="sec-head"><span class="sec-title">🗂 과업별 금주 해야할 일</span><span class="sec-sub">과업현황 시트의 시작일·종료일이 이번 주(월~일)와 겹치는 과업</span></div>
-  <div class="bygroup" id="bygroup"></div>
-
-  <!-- ═══ 최하단: 예산 ═══ -->
-  <div class="sec-head"><span class="sec-title">💰 예산 집행 현황</span><span class="sec-sub">시트 예산 탭의 집행 열을 채우면 자동 반영</span></div>
+  <!-- ═══ 최하단: 예산별 진행현황 ═══ -->
+  <div class="sec-head"><span class="sec-title">💰 예산별 진행현황</span><span class="sec-sub">시트 예산 탭의 집행 열을 채우면 자동 반영</span></div>
   <div class="budget-summary">
     <div class="bs-row">
       <div class="bs-item b-total"><div class="bs-num" id="b-contract">-</div><div class="bs-lbl">총 계약금액 (VAT 포함)</div></div>
@@ -264,7 +294,7 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
     <div class="bs-bar"><div class="bs-fill" id="b-fill"></div></div>
     <div class="bs-note" id="b-note"></div>
   </div>
-  <div class="budget-grid" id="budget-grid"></div>
+  <div class="budget-scroll"><div class="budget-grid" id="budget-grid"></div></div>
 </div>
 
 <div class="footer-bar">
@@ -282,46 +312,19 @@ h1{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 <script>
 /* ══════════════ ★ CONFIG ══════════════ */
 const SHEET_CSV_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=0&single=true&output=csv';
-const MEMBER_TODO_URLS = {
-  '최지연': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=2091866353&single=true&output=csv',
-  '김정현': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=1317358881&single=true&output=csv',
-  '이승헌': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=890383256&single=true&output=csv',
-  '이유빈': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=1185776079&single=true&output=csv',
-  '최보결': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=1424562520&single=true&output=csv',
-};
 const BUDGET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSR0Bvvd6_g1VJojV5DvXQn-oAwTLZWNqkFJWSRl0i4GyFiJ9v6cDnq7iBEpIcaIPoy0il-j7U90t2d/pub?gid=924802887&single=true&output=csv';
 const SCRIPT_URL     = 'https://script.google.com/macros/s/AKfycbysK4eYEcpmvr5cCS-UxcqHU9holAHWxyCiRqxprP-tDt1Eo66XqHx6XMoE98qLZtJt5Q/exec';
 /* ═══════════════════════════════════════ */
 
-const MEMBERS = ['최지연','김정현','이승헌','이유빈','최보결'];
 const APPLY_DEADLINE = new Date(2026,7,31);
 const EVENT_DAY      = new Date(2026,10,17);
-const CONTRACT_TOTAL = 205000000;   // 총 계약금액(VAT 포함, 만단위 절사)
+const CONTRACT_TOTAL = 205000000;
 const STATUS = {
   '완료':{cls:'done',name:'완료'}, '진행중':{cls:'doing',name:'진행중'},
   '대기':{cls:'wait',name:'대기'}, '미이행':{cls:'fail',name:'미이행'}, '리스크':{cls:'risk',name:'리스크'},
 };
 const STATUS_ORDER = ['완료','진행중','대기','미이행','리스크'];
 
-const FALLBACK_TODOS = [
-['T1','최지연','B.웹·접수','이메일 접수 수신대장·접수번호 체계 만들기','예정','7.8'],
-['T2','최지연','B.웹·접수','필수서류 체크리스트·보완요청 안내 템플릿 초안','예정','7.10'],
-['T3','최지연','B.웹·접수','커피쿠폰 이벤트 판별 기준 재설계안 작성','예정','7.10'],
-['T4','김정현','D.1차 심사','1차 심사위원·2차 검정위원 후보 리스트 초안','예정','7.10'],
-['T5','김정현','A.홍보·모집','홍보영상 진행 상황 점검(승태 컨택)','예정','7.8'],
-['T6','김정현','I.행정','주간보고 양식·제출 캘린더 확정','예정','7.9'],
-['T7','이승헌','E.멘토링·매칭','멘토기업 섭외 메일링 발송','예정','7.7'],
-['T8','이승헌','E.멘토링·매칭','메일 회신 관리표(참여 확정 기업) 만들기','예정','7.10'],
-['T9','이승헌','G.본 행사','QR 투표 플랫폼 비용 비교표 마무리','예정','7.10'],
-['T10','이유빈','A.홍보·모집','대학내일·링커리어 게재 일정 확정','예정','7.8'],
-['T11','이유빈','A.홍보·모집','기관별 공문 게시 추적표 작성·미게시 재요청','예정','7.9'],
-['T12','이유빈','A.홍보·모집','보도자료 배포 채널·일정 초안','예정','7.10'],
-['T13','최보결','B.웹·접수','사이트 변경 공고문·QR 반영 확인 + 캡처 증빙','예정','7.7'],
-['T14','최보결','G.본 행사','오스코 부스 수·VIP룸 견적 확정','예정','7.9'],
-['T15','최보결','C.홍보물·디자인','배너 잔여 매체(대학내일 등) 소재 사이즈 전달','예정','7.8'],
-];
-
-/* 2026.06.08 산출내역서 기준 (직접비) */
 const FALLBACK_BUDGET = [
 ['B1','1.인건비','총괄 PM(책임연구원×50%×4개월)',7567456,0,''],
 ['B2','1.인건비','진행관리(연구원 2명×80%×3개월)',13926298,0,''],
@@ -353,7 +356,7 @@ const FALLBACK_BUDGET = [
 ['B28','5.기타','예비비',1000000,0,'투표시스템 포함'],
 ];
 
-let tasks = [], todos = [], budget = [];
+let tasks = [], budget = [];
 let prevStatus = {};
 let filterStatus = null, selectedCat = null;
 const $ = id => document.getElementById(id);
@@ -382,7 +385,6 @@ function parseCSV(text){
   return rows.filter(r=>r.length>1&&r.some(v=>v.trim()!==''));
 }
 function bust(u){return u+(u.includes('?')?'&':'?')+'cachebust='+Date.now();}
-/* 시트의 시작일·종료일 문자열을 Date로 변환. 지원 형식: 2026-07-08 / 2026.07.08 / 2026/07/08 / 7.8(연도 2026 가정) */
 function parseKDate(s){
   s=String(s||'').trim(); if(!s) return null;
   let m=s.match(/^(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
@@ -391,7 +393,6 @@ function parseKDate(s){
   if(m) return new Date(2026,+m[1]-1,+m[2]);
   return null;
 }
-/* 오늘 기준 이번 주 월요일 0시 ~ 일요일 0시 */
 function weekRange(){
   const now=new Date(); now.setHours(0,0,0,0);
   const day=now.getDay();
@@ -401,7 +402,7 @@ function weekRange(){
   return {mon,sun};
 }
 
-/* ── 로드 ── */
+/* 과업현황 시트 열 순서: ID,구분,내용,진행계획,시작일,종료일,진행현황,진행예정,담당자,수행완료여부,비고,업데이트 */
 async function load(showToast){
   const note=$('sync-note'),btn=$('refresh-btn');
   btn.classList.add('spin');
@@ -412,37 +413,15 @@ async function load(showToast){
     if(!res.ok)throw 0;
     const body=parseCSV(await res.text()).slice(1);
     tasks=body.map(r=>{
-      const startStr=(r[8]||'').trim(), endStr=(r[9]||'').trim();
-      return {id:String(r[0]).trim(),cat:(r[1]||'').trim(),name:(r[2]||'').trim(),
-        status:(r[3]||'대기').trim(),owner:(r[4]||'').trim(),detail:(r[5]||'').trim(),note:(r[6]||'').trim(),
-        startStr:startStr,endStr:endStr,start:parseKDate(startStr),end:parseKDate(endStr)};
+      const startStr=(r[4]||'').trim(), endStr=(r[5]||'').trim();
+      return {
+        id:String(r[0]).trim(), cat:(r[1]||'').trim(), name:(r[2]||'').trim(),
+        plan:(r[3]||'').trim(), startStr, endStr, start:parseKDate(startStr), end:parseKDate(endStr),
+        status:(r[6]||'대기').trim(), next:(r[7]||'').trim(), owner:(r[8]||'').trim(),
+        done:(r[9]||'미완료').trim(), note:(r[10]||'').trim()
+      };
     }).filter(t=>t.id&&t.name);
   }catch(e){ fails.push('과업현황'); }
-
-  // 팀원별 개인 할일 탭 — 각자 따로 불러와서 합침
-  todos=[];
-  for(const member of Object.keys(MEMBER_TODO_URLS)){
-    const url=MEMBER_TODO_URLS[member];
-    if(url){
-      try{
-        const res=await fetch(bust(url));
-        if(!res.ok)throw 0;
-        const body=parseCSV(await res.text()).slice(1);
-        const list=body.map(r=>({id:String(r[0]).trim(),member:member,cat:(r[1]||'').trim(),
-          text:(r[2]||'').trim(),status:(r[3]||'예정').trim(),due:(r[4]||'').trim()}))
-          .filter(t=>t.id&&t.text);
-        todos.push(...list);
-      }catch(e){ fails.push(member+' 할일'); }
-    }else{
-      const list=FALLBACK_TODOS.filter(r=>r[1]===member)
-        .map(r=>({id:r[0],member:r[1],cat:r[2],text:r[3],status:r[4],due:r[5]}));
-      try{
-        const saved=JSON.parse(localStorage.getItem('ai-dash-todos')||'{}');
-        list.forEach(t=>{if(saved[t.id])t.status=saved[t.id];});
-      }catch(e){}
-      todos.push(...list);
-    }
-  }
 
   if(BUDGET_CSV_URL){
     try{
@@ -459,12 +438,7 @@ async function load(showToast){
 
   if(!fails.length){
     note.classList.remove('err');
-    const off=[];
-    const unlinked=Object.keys(MEMBER_TODO_URLS).filter(m=>!MEMBER_TODO_URLS[m]);
-    if(unlinked.length)off.push(unlinked.join('·')+' 할일');
-    if(!BUDGET_CSV_URL)off.push('예산');
-    note.textContent='시트 동기화 완료'+(off.length?' · '+off.join('·')+'은 내장 데이터':'')
-      +' · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+    note.textContent='시트 동기화 완료 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
     if(showToast)toast('최신 데이터를 불러왔어요');
   }else{
     note.classList.add('err');
@@ -474,13 +448,12 @@ async function load(showToast){
   render();
 }
 
-/* ── 기록 ── */
-async function write(sheet,id,status,doneMsg){
+async function write(sheet,id,values,doneMsg){
   if(SCRIPT_URL){
     try{
       await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',
         headers:{'Content-Type':'text/plain'},
-        body:JSON.stringify({sheet:sheet,id:id,status:status})});
+        body:JSON.stringify({sheet:sheet,id:id,values:values})});
       toast(doneMsg);
     }catch(e){ toast('⚠️ 시트 기록 실패 — 네트워크 확인'); }
   }else{
@@ -489,57 +462,41 @@ async function write(sheet,id,status,doneMsg){
 }
 function toggleTask(id){
   const t=tasks.find(x=>x.id===id);if(!t)return;
-  if(t.status==='완료'){ t.status=prevStatus[id]||'진행중'; }
-  else{ prevStatus[id]=t.status; t.status='완료'; }
-  write('과업현황',id,t.status, t.status==='완료'?'✅ 과업 완료 — 시트에 기록했어요':'↩️ '+t.status+'(으)로 되돌렸어요');
-  render();
-}
-function toggleTodo(id){
-  const t=todos.find(x=>x.id===id);if(!t)return;
-  t.status = t.status==='완료'?'예정':'완료';
-  if(MEMBER_TODO_URLS[t.member]){
-    write(t.member,id,t.status, t.status==='완료'?'✅ '+t.member+' 할일 완료 — 시트에 기록했어요':'↩️ 예정으로 되돌렸어요');
+  if(t.done==='완료'){
+    t.done='미완료'; t.status=prevStatus[id]||'진행중';
   }else{
-    try{
-      const saved=JSON.parse(localStorage.getItem('ai-dash-todos')||'{}');
-      saved[id]=t.status;localStorage.setItem('ai-dash-todos',JSON.stringify(saved));
-    }catch(e){}
-    toast(t.status==='완료'?'✅ 완료 (이 기기에만 저장됨)':'↩️ 예정으로 변경');
+    prevStatus[id]=t.status; t.done='완료'; t.status='완료';
   }
+  write('과업현황',id,{done:t.done,status:t.status},
+    t.done==='완료'?'✅ 완료 처리 — 시트에 기록했어요':'↩️ 미완료로 되돌렸어요');
   render();
-}
-
-/* ── 렌더 ── */
-function todoRow(t,showWho){
-  const d=t.status==='완료';
-  return `<div class="todo${d?' is-done':''}">
-    <button class="chk-s${d?' on':''}" aria-label="${d?'완료 해제':'완료 처리'}: ${esc(t.text)}" onclick="toggleTodo('${t.id}')">
-      <svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></svg></button>
-    <div><div class="td-text">${showWho?'<span class="who">'+esc(t.member)+'</span>':''}${esc(t.text)}</div>
-      <div class="td-meta"><span class="td-cat">${esc(t.cat)}</span>${t.due?'<span class="td-due">~'+esc(t.due)+'</span>':''}</div>
-    </div></div>`;
 }
 
 function taskWeekRow(t){
-  const d=t.status==='완료';
+  const d=t.done==='완료';
   const due=t.endStr?('~'+t.endStr):(t.startStr?(t.startStr+'~'):'');
   return `<div class="todo${d?' is-done':''}">
     <button class="chk-s${d?' on':''}" aria-label="${d?'완료 해제':'완료 처리'}: ${esc(t.name)}" onclick="toggleTask('${t.id}')">
       <svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></svg></button>
     <div><div class="td-text"><span class="who">${esc(t.owner||'미지정')}</span>${esc(t.name)}</div>
-      <div class="td-meta"><span class="td-cat">${esc(t.cat)}</span>${due?'<span class="td-due">'+esc(due)+'</span>':''}</div>
+      <div class="td-meta"><span class="td-cat">${esc(t.cat)}</span>${due?'<span class="td-due">'+esc(due)+'</span>':''}${t.next?'<span class="td-next">다음: '+esc(t.next)+'</span>':''}</div>
     </div></div>`;
 }
 
 function render(){
   $('dday-apply').textContent=dday(APPLY_DEADLINE);
   $('dday-event').textContent=dday(EVENT_DAY);
-  $('week-label').textContent='이번 주 '+todos.filter(t=>t.status==='완료').length+'/'+todos.length+' 완료';
 
-  const total=tasks.length,done=tasks.filter(t=>t.status==='완료').length;
-  const pct=total?Math.round(done/total*100):0;
-  $('gate-pct').textContent=pct+'% ('+done+'/'+total+')';
-  $('gate-fill').style.width=pct+'%';
+  const total=tasks.length,doneN=tasks.filter(t=>t.done==='완료').length;
+  const readyPct=total?Math.round(doneN/total*100):0;
+  $('hr-ready').textContent=readyPct+'%';
+  $('hr-ready-fill').style.width=readyPct+'%';
+
+  const planSum=budget.reduce((a,b)=>a+b.plan,0);
+  const spentSum=budget.reduce((a,b)=>a+b.spent,0);
+  const bp=planSum?Math.round(spentSum/planSum*100):0;
+  $('hr-budget').textContent=bp+'%';
+  $('hr-budget-fill').style.width=Math.min(bp,100)+'%';
 
   const counts={};STATUS_ORDER.forEach(s=>counts[s]=0);
   tasks.forEach(t=>{if(counts[t.status]!==undefined)counts[t.status]++;});
@@ -549,24 +506,30 @@ function render(){
   $('summary').querySelectorAll('.sum-card').forEach(el=>{
     el.onclick=()=>{filterStatus=(filterStatus===el.dataset.status)?null:el.dataset.status;render();};});
 
-  // 팀원별
-  const extra=[...new Set(todos.map(t=>t.member))].filter(m=>m&&!MEMBERS.includes(m));
-  const allMembers=[...MEMBERS,...extra];
-  $('members').innerHTML=allMembers.map(m=>{
-    const list=todos.filter(t=>t.member===m);
-    const doneN=list.filter(t=>t.status==='완료').length;
-    return `<div class="member">
-      <div class="m-head"><div class="avatar">${esc(m.slice(-2))}</div>
-        <div><div class="m-name">${esc(m)}</div>
-        <div class="m-count"><b>${doneN}</b>/${list.length} 완료</div></div></div>
-      ${list.length?list.map(t=>todoRow(t,false)).join(''):'<div class="m-empty">이번 주 할일이 없어요</div>'}
-    </div>`;}).join('');
+  // 금주 체크리스트 — 시작일·종료일이 이번 주(월~일)와 겹치는 과업
+  const {mon,sun}=weekRange();
+  const weekTasks=tasks.filter(t=>{
+    const s=t.start||t.end, e=t.end||t.start;
+    if(!s||!e) return false;
+    return s<=sun && e>=mon;
+  });
+  $('week-count').textContent=weekTasks.filter(t=>t.done==='완료').length+'/'+weekTasks.length+' 완료';
+  const byCat={};
+  weekTasks.forEach(t=>{(byCat[t.cat]=byCat[t.cat]||[]).push(t);});
+  const keys=Object.keys(byCat).sort();
+  $('bygroup').innerHTML=keys.length?keys.map(c=>{
+    const list=byCat[c];const d=list.filter(t=>t.done==='완료').length;
+    return `<div class="g-card">
+      <div class="g-title">${esc(c)}<span>${d}/${list.length}</span></div>
+      ${list.map(t=>taskWeekRow(t)).join('')}
+    </div>`;}).join('')
+    :'<div class="empty">이번 주(월~일)에 마감·진행 예정인 과업이 없어요.<br>과업현황 시트의 시작일·종료일 열을 채워보세요.</div>';
 
-  // 왼쪽 카테고리
+  // 업무별 진행현황: 왼쪽 카테고리
   const cats=[...new Set(tasks.map(t=>t.cat))];
   $('cat-total').textContent='총 '+tasks.length+'건';
   const catBtn=(label,list,val)=>{
-    const d=list.filter(t=>t.status==='완료').length;
+    const d=list.filter(t=>t.done==='완료').length;
     const f=list.filter(t=>t.status==='미이행').length;
     const r=list.filter(t=>t.status==='리스크').length;
     const p=list.length?Math.round(d/list.length*100):0;
@@ -588,48 +551,27 @@ function render(){
   $('detail-title').textContent=(selectedCat||'전체')+(filterStatus?' · '+filterStatus+'만':'');
   $('detail-count').textContent=shown.length+'건';
   $('task-list').innerHTML=shown.length?shown.map(t=>{
-    const st=STATUS[t.status]||STATUS['대기'];const d=t.status==='완료';
+    const st=STATUS[t.status]||STATUS['대기'];const d=t.done==='완료';
     return `<div class="task${d?' is-done':''}">
       <button class="chk${d?' on':''}" aria-label="${d?'완료 해제':'완료 처리'}: ${esc(t.name)}" onclick="toggleTask('${t.id}')">
         <svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></svg></button>
       <div class="t-body">
         <div class="t-top"><div class="t-name">${esc(t.name)}</div><span class="pill p-${st.cls}">${st.name}</span></div>
-        <div class="t-meta">${t.owner?'담당 <b>'+esc(t.owner)+'</b>':'담당 미지정'}</div>
-        ${(t.detail||t.note)?`<button class="more" onclick="this.closest('.task').classList.toggle('open');this.textContent=this.closest('.task').classList.contains('open')?'접기 ▲':'자세히 ▼'">자세히 ▼</button>
+        <div class="t-meta">${t.owner?'담당 <b>'+esc(t.owner)+'</b>':'담당 미지정'}${(t.startStr||t.endStr)?'<span>'+esc(t.startStr||'?')+' ~ '+esc(t.endStr||'?')+'</span>':''}</div>
+        <button class="more" onclick="this.closest('.task').classList.toggle('open');this.textContent=this.closest('.task').classList.contains('open')?'접기 ▲':'자세히 ▼'">자세히 ▼</button>
         <div class="t-detail">
-          ${t.detail?'<p><span class="lbl">진행 근거</span><br>'+esc(t.detail)+'</p>':''}
-          ${t.note?'<p><span class="lbl">비고·리스크</span><br>'+esc(t.note)+'</p>':''}
-        </div>`:''}
+          ${t.plan?'<p><span class="lbl">진행계획</span><br>'+esc(t.plan)+'</p>':''}
+          ${t.next?'<p><span class="lbl">진행예정</span><br>'+esc(t.next)+'</p>':''}
+          ${t.note?'<p><span class="lbl">비고</span><br>'+esc(t.note)+'</p>':''}
+        </div>
       </div></div>`;}).join('')
     :'<div class="empty">조건에 맞는 과업이 없어요.<br>상태 카운터나 왼쪽 목록을 다시 눌러 해제할 수 있어요.</div>';
 
-  // 과업별 금주 할일 — 과업현황 시트의 시작일·종료일이 이번 주(월~일)와 겹치는 과업만
-  const {mon,sun}=weekRange();
-  const weekTasks=tasks.filter(t=>{
-    const s=t.start||t.end, e=t.end||t.start;
-    if(!s||!e) return false;
-    return s<=sun && e>=mon;
-  });
-  const byCat={};
-  weekTasks.forEach(t=>{(byCat[t.cat]=byCat[t.cat]||[]).push(t);});
-  const keys=Object.keys(byCat).sort();
-  $('bygroup').innerHTML=keys.length?keys.map(c=>{
-    const list=byCat[c];const d=list.filter(t=>t.status==='완료').length;
-    return `<div class="g-card">
-      <div class="g-title">${esc(c)}<span>${d}/${list.length}</span></div>
-      ${list.map(t=>taskWeekRow(t)).join('')}
-    </div>`;}).join('')
-    :'<div class="empty">이번 주(월~일)에 마감·진행 예정인 과업이 없어요.<br>과업현황 시트의 시작일·종료일 열을 채워보세요.</div>';
-
-  // ── 예산 ──
-  const planSum=budget.reduce((a,b)=>a+b.plan,0);
-  const spentSum=budget.reduce((a,b)=>a+b.spent,0);
-  const leftSum=planSum-spentSum;
-  const bp=planSum?Math.round(spentSum/planSum*100):0;
+  // 예산
   $('b-contract').textContent=wonShort(CONTRACT_TOTAL);
   $('b-budget').textContent=wonShort(planSum);
   $('b-spent').textContent=spentSum?wonShort(spentSum):'0원';
-  $('b-left').textContent=wonShort(leftSum);
+  $('b-left').textContent=wonShort(planSum-spentSum);
   $('b-fill').style.width=bp+'%';
   $('b-note').textContent='직접비 기준 집행률 '+bp+'% · 총 계약금액에는 기업이윤·일반관리비 및 VAT 포함 (2026.06.08 산출내역서 기준)';
 
