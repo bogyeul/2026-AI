@@ -155,7 +155,8 @@ h1{font-size:19px;font-weight:800;letter-spacing:-.01em;line-height:1.3}
 .t-lbl{display:block;font-size:10px;font-weight:800;color:var(--barn);letter-spacing:.03em;margin-bottom:1px}
 .t-val{font-size:12.5px;color:var(--ink);line-height:1.35;word-break:keep-all}
 .t-name{font-weight:700}
-.t-date{display:block;font-size:10.5px;color:var(--ink-soft);font-weight:600;margin-top:2px}
+.phase-tag{display:inline-block;background:#EDF3F9;color:var(--barn);font-size:10px;font-weight:800;
+  border-radius:5px;padding:1px 6px;margin-right:6px;vertical-align:middle}
 .t-note{font-size:11.5px;color:#41506B;background:#F3F7FB;border:1px dashed var(--line);
   border-radius:8px;padding:5px 9px;margin-top:1px}
 .t-note .lbl{font-weight:800;color:var(--barn);font-size:11px;margin-right:4px}
@@ -439,12 +440,13 @@ async function load(showToast){
     if(!res.ok)throw 0;
     const body=parseCSV(await res.text()).slice(1);
     tasks=body.map(r=>{
-      const startStr=(r[4]||'').trim(), endStr=(r[5]||'').trim();
+      const startStr=(r[5]||'').trim(), endStr=(r[6]||'').trim();
       return {
-        id:String(r[0]).trim(), cat:(r[1]||'').trim(), name:(r[2]||'').trim(),
-        plan:(r[3]||'').trim(), startStr, endStr, start:parseKDate(startStr), end:parseKDate(endStr),
-        status:(r[6]||'대기').trim(), next:(r[7]||'').trim(), owner:(r[8]||'').trim(),
-        done:(r[9]||'미완료').trim(), note:(r[10]||'').trim()
+        id:String(r[0]).trim(), cat:(r[1]||'').trim(), phase:(r[2]||'').trim(),
+        status:(r[3]||'대기').trim(), name:(r[4]||'').trim(),
+        startStr, endStr, start:parseKDate(startStr), end:parseKDate(endStr),
+        plan:(r[7]||'').trim(), next:(r[8]||'').trim(), owner:(r[9]||'').trim(),
+        done:(r[10]||'미완료').trim(), note:(r[11]||'').trim()
       };
     }).filter(t=>t.id&&t.name);
   }catch(e){ fails.push('과업현황'); }
@@ -621,7 +623,7 @@ function render(){
         <svg viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></svg></button>
       <div class="t-body">
         <div class="t-grid t-grid-3">
-          <div class="t-cell t-cell-wide"><span class="t-lbl">내용</span><div class="t-val t-name">${esc(t.name)}${(t.startStr||t.endStr)?'<span class="t-date">'+esc(t.startStr||'?')+' ~ '+esc(t.endStr||'?')+'</span>':''}</div></div>
+          <div class="t-cell t-cell-wide"><span class="t-lbl">내용</span><div class="t-val t-name">${t.phase?'<span class="phase-tag">'+esc(t.phase)+'</span>':''}${esc(t.name)}</div></div>
           <div class="t-cell"><span class="t-lbl">담당자</span><div class="t-val">${t.owner?esc(t.owner):'미지정'}</div></div>
           <div class="t-cell"><span class="t-lbl">진행현황</span><div class="t-val"><span class="pill p-${st.cls}">${st.name}</span></div></div>
         </div>
