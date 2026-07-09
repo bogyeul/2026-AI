@@ -7,7 +7,7 @@
 --done:#16a34a;--doing:#2563eb;--wait:#94a3b8;--risk:#e0870a;
 --done-b:#e8f6ee;--doing-b:#e8f0fe;--wait-b:#eef1f5;--risk-b:#fdf3e2;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;background:var(--bg);color:var(--ink);font-size:13.5px;line-height:1.5}
+body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;background:var(--bg);color:var(--ink);font-size:13.5px;line-height:1.5;-webkit-text-size-adjust:100%;overflow-x:hidden}
 .wrap{max-width:1120px;margin:0 auto;padding:16px 16px 30px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
 .tl .k{font-size:11px;letter-spacing:.06em;color:var(--navy);font-weight:700}
@@ -66,6 +66,44 @@ body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;backg
 .sync.err{color:var(--risk);font-weight:600}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(8px);background:var(--ink);color:#fff;font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:40}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── 모바일 최적화 ── */
+@media(max-width:860px){
+ .tls{max-height:none}
+ .grp{position:static}
+}
+@media(max-width:640px){
+ body{font-size:13px}
+ .wrap{padding:12px 12px 28px}
+ .top{flex-direction:column;align-items:stretch;gap:10px}
+ .tl h1{font-size:16px}
+ .tr{justify-content:flex-start;flex-wrap:wrap}
+ .dd,.prog{padding:7px 12px;font-size:12px}
+ .rf{width:36px;height:36px;margin-left:auto}
+ .kpis{gap:6px}
+ .kpi{padding:10px 3px;border-radius:9px}
+ .kpi .n{font-size:19px}
+ .kpi .l{font-size:10px}
+ .ch{padding:11px 12px}
+ .cb{padding:4px 6px}
+ .crow{padding:11px 8px}
+ .cname{flex-basis:82px;font-size:12px}
+ .trow{padding:11px 8px;gap:11px;align-items:flex-start}
+ .cbx{width:26px;height:26px;border-radius:7px}
+ .cbx svg{width:15px;height:15px}
+ .tnm{white-space:normal;font-size:13.5px;line-height:1.35}
+ .tmeta{white-space:normal}
+ .pill{margin-top:2px}
+ .tdet{padding:2px 10px 12px 45px}
+ .grp{position:static}
+ .foot{padding-bottom:6px}
+ .toast{bottom:18px;font-size:13px}
+}
+@media(max-width:380px){
+ .kpi .n{font-size:17px}
+ .kpi .l{font-size:9.5px}
+ .cname{flex-basis:70px}
+}
 </style></head><body>
 <div class="wrap">
  <div class="top">
