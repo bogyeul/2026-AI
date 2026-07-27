@@ -27,14 +27,19 @@ body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;backg
 .grid{display:grid;grid-template-columns:340px 1fr;gap:14px;align-items:start}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px}
-.ch{padding:11px 14px;font-size:13px;font-weight:800;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.ch{padding:11px 14px;font-size:13px;font-weight:800;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:3px 8px}
 .ch .s{font-size:11.5px;color:var(--mut);font-weight:600}
 .cb{padding:6px 8px}
 .crow{display:flex;align-items:center;gap:10px;padding:8px 8px;border-radius:8px;cursor:pointer}
 .crow:hover{background:#f7f9fc}.crow.on{background:#eef4fb}
 .cname{flex:0 0 96px;font-size:12.5px;font-weight:700}
-.cbar{flex:1;height:7px;background:#eef1f5;border-radius:99px;overflow:hidden}
-.cfill{display:block;height:100%;border-radius:99px;background:var(--done);transition:width .35s ease}
+.cbar{flex:1;height:7px;background:#eef1f5;border-radius:99px;overflow:hidden;display:flex}
+.cfill,.cing{display:block;height:100%;transition:width .35s ease}
+.cfill{background:var(--done)}
+.cing{background:var(--doing)}
+.lgd{display:inline-flex;align-items:center;gap:4px;margin-left:9px;font-weight:600}
+.lgd>i{width:7px;height:7px;border-radius:2px;display:block;flex:0 0 auto}
+.lgd>b{font-weight:800;color:var(--ink)}
 .ccnt{flex:0 0 auto;font-size:11.5px;color:var(--mut);font-weight:700;min-width:34px;text-align:right}
 .cdot{flex:0 0 auto;width:7px;height:7px;border-radius:99px;background:var(--risk);visibility:hidden}
 .crow.hasrisk .cdot{visibility:visible}
@@ -343,9 +348,16 @@ function render(){
  $('kpis').innerHTML=chips.map(c=>`<div class="kpi k-${c[2]} ${((c[3]===''&&!fSt)||fSt===c[3]&&c[3]!=='')?'on':''}" data-st="${c[3]}"><div class="n">${c[1]}</div><div class="l">${c[0]}</div></div>`).join('');
  $('kpis').querySelectorAll('.kpi').forEach(e=>e.onclick=()=>{const v=e.dataset.st;fSt=(v===''||fSt===v)?null:v;render()});
  const cats=[...new Set(TASKS.map(t=>t.cat))];
- $('catsum').textContent=dn+'/'+TASKS.length+' 완료';
- $('board').innerHTML=cats.map(c=>{const L=TASKS.filter(t=>t.cat===c),d=L.filter(t=>t.done).length,rk=L.some(t=>t.st==='리스크'&&!t.done),p=Math.round(d/L.length*100);
-  return `<div class="crow ${fCat===c?'on':''} ${rk?'hasrisk':''}" data-c="${esc(c)}"><span class="cname">${esc(c)}</span><span class="cbar"><i class="cfill" style="width:${p}%"></i></span><span class="ccnt">${d}/${L.length}</span><span class="cdot"></span></div>`}).join('');
+ const ingAll=TASKS.filter(t=>!t.done&&t.st==='진행중').length;
+ $('catsum').innerHTML=`<em class="lgd"><i style="background:var(--done)"></i>완료 <b>${dn}</b></em>`
+  +`<em class="lgd"><i style="background:var(--doing)"></i>진행중 <b>${ingAll}</b></em>`
+  +`<em class="lgd" style="color:#94a3b8">/ 총 ${TASKS.length}</em>`;
+ $('board').innerHTML=cats.map(c=>{const L=TASKS.filter(t=>t.cat===c),d=L.filter(t=>t.done).length,
+   ing=L.filter(t=>!t.done&&t.st==='진행중').length,rk=L.some(t=>t.st==='리스크'&&!t.done),
+   p=L.length?d/L.length*100:0,pi=L.length?ing/L.length*100:0;
+  return `<div class="crow ${fCat===c?'on':''} ${rk?'hasrisk':''}" data-c="${esc(c)}" title="${esc(c)} · 완료 ${d} / 진행중 ${ing} / 전체 ${L.length}"><span class="cname">${esc(c)}</span>`
+   +`<span class="cbar"><i class="cfill" style="width:${p.toFixed(1)}%"></i><i class="cing" style="width:${pi.toFixed(1)}%"></i></span>`
+   +`<span class="ccnt">${d}/${L.length}</span><span class="cdot"></span></div>`}).join('');
  $('board').querySelectorAll('.crow').forEach(e=>e.onclick=()=>{fCat=fCat===e.dataset.c?null:e.dataset.c;render()});
  const bc={},sc={};BUDGET.forEach(b=>{bc[b.cat]=(bc[b.cat]||0)+b.plan;sc[b.cat]=(sc[b.cat]||0)+b.spent});
  const plan=BUDGET.reduce((a,b)=>a+b.plan,0),spent=BUDGET.reduce((a,b)=>a+b.spent,0);
