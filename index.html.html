@@ -67,6 +67,54 @@ body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;backg
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(8px);background:var(--ink);color:#fff;font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:40}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* ── TM 주요업무 현황 패널 ── */
+.tm{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.tmh{list-style:none;cursor:pointer;padding:11px 14px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;user-select:none}
+.tmh::-webkit-details-marker{display:none}
+.tmh:hover{background:#f7f9fc}
+.tmh .ti{font-size:13px;font-weight:800;letter-spacing:-.01em}
+.tmtag{font-size:10.5px;font-weight:800;color:var(--doing);background:var(--doing-b);border-radius:99px;padding:2px 8px;white-space:nowrap}
+.tmh-r{display:flex;align-items:center;gap:9px;margin-left:auto}
+.tmchips{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.chev{margin-left:auto}
+.tmempty{padding:18px;text-align:center;color:#94a3b8;font-size:12px}
+.tmq{font-size:11.5px;color:var(--mut);font-weight:600;white-space:nowrap}
+.tmq b{color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums;margin-left:2px}
+.tmq.pos b{color:var(--doing)}
+.chev{transition:.2s;color:var(--mut);flex:0 0 auto}
+.tm[open] .chev{transform:rotate(180deg)}
+.tmb{padding:12px 14px 14px;border-top:1px solid var(--line)}
+.tmk{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tmk>div{border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center;background:#fbfcfe}
+.tmk .n{font-size:20px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.tmk .l{font-size:11px;color:var(--mut);font-weight:700;margin-top:5px}
+.tmk .s{font-size:10px;color:#9aa5b4;margin-top:2px;font-weight:600}
+.tmgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:10px;margin-top:10px}
+.tmp{border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+.tmp .ph{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:9px}
+.tmp .ph b{font-size:12.5px;font-weight:800}
+.tmp .ph span{font-size:11px;color:var(--mut);font-weight:600;text-align:right}
+.sbar{display:flex;height:15px;border-radius:6px;overflow:hidden;background:#eef1f5}
+.sbar i{display:block;height:100%;min-width:0}
+.lg{display:flex;flex-wrap:wrap;gap:5px 13px;margin-top:9px}
+.lg em{font-size:11.5px;color:var(--mut);font-weight:600;font-style:normal;display:inline-flex;align-items:center;gap:5px}
+.lg em>i{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
+.lg em>b{color:var(--ink);font-weight:800;font-variant-numeric:tabular-nums}
+.tmnote{margin-top:9px;background:#f7f9fc;border-radius:8px;padding:8px 10px;font-size:11.5px;color:#41506b;line-height:1.55}
+.tmnote b{color:var(--navy);font-weight:800}
+.tmstep{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:10px}
+.tmstep>div{border:1px dashed #cfd8e3;border-radius:10px;padding:9px 11px;background:#fbfcfe}
+.tmstep .t{font-size:10.5px;font-weight:800;color:var(--navy);letter-spacing:.02em}
+.tmstep .d{font-size:11.5px;color:#41506b;margin-top:3px;line-height:1.5}
+.tmstep .d b{font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+@media(max-width:640px){
+ .tmh{padding:12px}
+ .tmh-r{width:100%;margin-left:0;gap:8px}
+ .tmb{padding:11px 12px 12px}
+ .tmk{grid-template-columns:repeat(2,1fr)}
+ .tmk .n{font-size:18px}
+}
+
 /* ── 모바일 최적화 ── */
 @media(max-width:860px){
  .tls{max-height:none}
@@ -115,6 +163,20 @@ body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;backg
    <button class="rf" id="rf" title="새로고침"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 3v6h-6"/></svg></button>
   </div>
  </div>
+ <details class="tm" id="tm" open>
+  <summary class="tmh">
+   <span class="ti" id="tmtitle">TM 참여독려 콜 현황</span>
+   <span class="tmtag" id="tmtag">불러오는 중…</span>
+   <span class="tmh-r"><span class="tmchips" id="tmchips"></span>
+    <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+   </span>
+  </summary>
+  <div class="tmb">
+   <div class="tmk" id="tmkpi"></div>
+   <div class="tmgrid" id="tmrounds"></div>
+   <div class="tmstep" id="tmsteps"></div>
+  </div>
+ </details>
  <div class="kpis" id="kpis"></div>
  <div class="grid">
   <div style="display:flex;flex-direction:column;gap:14px">
@@ -132,12 +194,82 @@ body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;backg
 <script>
 /* ===== CONFIG ===== */
 const CFG={
- CSV:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQcLQJ_wbZqe0Xl9Ymevz6TsttFk_rgBXURB4IfpuTTX8BQvjKZhNKHIqG4puqkZLmib-kn0xN54vll/pub?gid=742089778&single=true&output=csv',
- BUDGET:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQcLQJ_wbZqe0Xl9Ymevz6TsttFk_rgBXURB4IfpuTTX8BQvjKZhNKHIqG4puqkZLmib-kn0xN54vll/pub?gid=92361766&single=true&output=csv',
+ CSV:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQcLQJ_wbZqe0Xl9Ymevz6TsttFk_rgBXURB4IfpuTTX8BQvjKZhNKHIqG4puqkZLmib-kn0xN54vll/pub?gid=83024077&single=true&output=csv',
+ BUDGET:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQcLQJ_wbZqe0Xl9Ymevz6TsttFk_rgBXURB4IfpuTTX8BQvjKZhNKHIqG4puqkZLmib-kn0xN54vll/pub?gid=62293079&single=true&output=csv',
  SCRIPT:'https://script.google.com/macros/s/AKfycbzQOY676f8LR8xGlM5X7pV4V_CKHBjAtZMukQYAiXgJE3pnp4LjuMZ6tEPmqCXdlelE/exec'
 };
 /* ================== */
 const FALLBACK=[{"id": "A1", "cat": "Owned Media", "catKey": "A", "name": "축평원 누리집 공모 공고 게시·유지", "cur": "게시 유지·모니터링", "next": "마감까지 상시 유지", "note": "변경공고(제2026-104호) 반영 게시. 이메일 접수로 안내 변경.", "owner": "홍보(배움)", "end": "", "due": "상시", "st": "완료", "urgent": false, "done": true}, {"id": "A2", "cat": "Owned Media", "catKey": "A", "name": "전용 사이트(smartlivestock.co.kr) 구축·오픈", "cur": "랜딩페이지 신규 디자인·개편 작업중", "next": "개편 완료(목표 7/8경)→이메일 접수 안내로 내용 확정", "note": "도메인 smartlivestock.co.kr 확정·구매(당초 ~AI/farming 축약). 6/15 임시 '준비중' 오픈. 김경섭 대표(한결) 구축계약·선금 완료. 당초 접수기능(사전희망등록+파일업로드 200MB)+커피쿠폰 이벤트 기획→6/19 개인정보보호법 4~11조 준수 불가로 접수기능 제외, 홍보용으로 전환.", "owner": "기획·기술(배움/한결)", "end": "2026.07.08", "due": "★~7/8", "st": "진행중", "urgent": true, "done": false}, {"id": "A3", "cat": "Owned Media", "catKey": "A", "name": "공고문·우수사례집·유튜브 등 콘텐츠 연결 정비", "cur": "우수사례집 다운로드 연결·최신 공고문 반영 완료 확인", "next": "자체영상 완성 후 유튜브 교체, 상시 점검", "note": "공고문 다운로드가 구버전으로 연결되는 오류 반복 지적→7/6 수정. 우수사례집은 축평원 서버 보안상 직접다운 불가→자체서버 업로드 방식. 유튜브는 영상 제작 전이라 자리만 배치(현재 작년 영상).", "owner": "기획·기술", "end": "2026.07.10", "due": "상시", "st": "진행중", "urgent": false, "done": false}, {"id": "A4", "cat": "Owned Media", "catKey": "A", "name": "누리집·사이트 팝업 배너 게시", "cur": "", "next": "개편 후 게시", "note": "랜딩 개편과 연계 예정.", "owner": "홍보", "end": "", "due": "~7월중", "st": "대기", "urgent": false, "done": false}, {"id": "A5", "cat": "Owned Media", "catKey": "A", "name": "네이버·구글 포털 등록 및 SEO", "cur": "", "next": "랜딩 확정 후 등록", "note": "별도 진행 기록 미확인.", "owner": "기획·기술", "end": "", "due": "~7월중", "st": "대기", "urgent": false, "done": false}, {"id": "A6", "cat": "Owned Media", "catKey": "A", "name": "Owned 채널 포스터·카드뉴스 게시", "cur": "Owned 채널 게시 진행", "next": "카드뉴스 등 콘텐츠 지속 게시", "note": "주말 인스타그램 보고 경진대회 자료 찾는 농가 문의 발생(7/6)—홍보효과 확인.", "owner": "홍보", "end": "", "due": "상시", "st": "진행중", "urgent": false, "done": false}, {"id": "A7", "cat": "Owned Media", "catKey": "A", "name": "유관 협회 채널 게시", "cur": "", "next": "모집기간 게시", "note": "별도 기록 미확인.", "owner": "홍보", "end": "2026.08.15", "due": "7~8월", "st": "대기", "urgent": false, "done": false}, {"id": "A8", "cat": "Owned Media", "catKey": "A", "name": "자사 유튜브에 홍보영상 게시", "cur": "영상 제작 대기", "next": "쇼츠 완성 후 게시", "note": "현재 사이트에 작년 영상만 배치.", "owner": "홍보", "end": "", "due": "영상 완성 후", "st": "대기", "urgent": false, "done": false}, {"id": "A9", "cat": "Owned Media", "catKey": "A", "name": "카드뉴스 등 10종 이상 제작·배포", "cur": "제작처 조율", "next": "카드뉴스 순차 제작·배포", "note": "카드뉴스 제작 필요 확인, 배움 내 디자이너 부재로 진팀장(범신사) 경유 제작키로.", "owner": "홍보/디자인", "end": "", "due": "7~11월", "st": "리스크", "urgent": false, "done": false}, {"id": "B1", "cat": "Earned Media", "catKey": "B", "name": "언론보도·유관네트워크·언론진흥재단 집행 여부 결정", "cur": "발주처와 예산 집행 협의 필요", "next": "협의 결과에 따라 범위·집행 확정", "note": "발주처(이진규)가 언론보도·유관네트워크 홍보·언론진흥재단 비용의 효과/필요성에 의문 제기(7/2). Owned media 개념도 문의.", "owner": "총괄PM/홍보", "end": "2026.07.10", "due": "★즉시 협의", "st": "리스크", "urgent": true, "done": false}, {"id": "B2", "cat": "Earned Media", "catKey": "B", "name": "행사 안내·일정 사전 보도자료 배포", "cur": "언론 예산 협의와 연동", "next": "협의 후 배포", "note": "포스터와 함께 배포 계획 논의(6월), 농민신문 등 관련 기사 존재.", "owner": "홍보", "end": "", "due": "협의 후", "st": "리스크", "urgent": false, "done": false}, {"id": "B3", "cat": "Earned Media", "catKey": "B", "name": "축산/AI·데이터 매체 리스트업·배포", "cur": "", "next": "협의 후 진행", "note": "제안서상 매체안 존재, 실제 컨택 기록 미확인.", "owner": "홍보", "end": "", "due": "7~9월", "st": "대기", "urgent": false, "done": false}, {"id": "B4", "cat": "Earned Media", "catKey": "B", "name": "전문성 보도·인터뷰", "cur": "", "next": "8~10월 진행", "note": "", "owner": "홍보", "end": "", "due": "8~10월", "st": "대기", "urgent": false, "done": false}, {"id": "B5", "cat": "Earned Media", "catKey": "B", "name": "행사 성료·우수사례 확산 보도", "cur": "", "next": "11/18~ 진행", "note": "", "owner": "홍보", "end": "2026.11.28", "due": "11월말", "st": "대기", "urgent": false, "done": false}, {"id": "C1", "cat": "브랜디드 콘텐츠", "catKey": "C", "name": "YTN 광고용 참여독려 쇼츠 제작", "cur": "콘티 확정 마무리·제작 착수 단계", "next": "YTN 광고(7월 중순) 전 최종본 완성", "note": "정승태 감독(Ralov) 콘티 다회 수정(6/24~7/2), 실사 대신 C안 AI제작 확정. 등장인물 산란계·양돈·한우 조율, 첫장면 7등분 확정. 7/2 균형 지적(등장인물 1분 vs 참가 10초)→참여독려로 분량 절반 확대 보완중(김정현 본부장 관여). 별도 한우 조기출하 30초 쇼츠도 요청.", "owner": "영상(정승태)/본부장", "end": "2026.07.15", "due": "★~7월 중순", "st": "진행중", "urgent": true, "done": false}, {"id": "C2", "cat": "브랜디드 콘텐츠", "catKey": "C", "name": "행사 오프닝/주제(노멀) 영상 제작", "cur": "", "next": "본행사 전 제작", "note": "제작 5꼭지 중 하나로 계획(사전홍보·주제·발표기업·본선팀·스케치).", "owner": "영상", "end": "2026.11.10", "due": "~11/10", "st": "대기", "urgent": false, "done": false}, {"id": "C3", "cat": "브랜디드 콘텐츠", "catKey": "C", "name": "상용화팀 농장적용·인터뷰 영상", "cur": "", "next": "본선 확정(10월중순) 후", "note": "본선 확정 후 제작 계획.", "owner": "영상", "end": "2026.11.10", "due": "~11/10", "st": "대기", "urgent": false, "done": false}, {"id": "C4", "cat": "브랜디드 콘텐츠", "catKey": "C", "name": "본선 7팀 기술소개 영상", "cur": "", "next": "본선 후 제작", "note": "본선 확정 후 제작.", "owner": "영상", "end": "2026.11.10", "due": "~11/10", "st": "대기", "urgent": false, "done": false}, {"id": "C5", "cat": "브랜디드 콘텐츠", "catKey": "C", "name": "현장 스케치·하이라이트 영상", "cur": "", "next": "행사 당일 촬영→편집", "note": "5꼭지 중 마지막(스케치).", "owner": "영상", "end": "2026.11.28", "due": "~11/28", "st": "대기", "urgent": false, "done": false}, {"id": "C6", "cat": "브랜디드 콘텐츠", "catKey": "C", "name": "SNS 카드뉴스/성과 인포그래픽", "cur": "제작처 조율", "next": "순차 제작", "note": "디자이너 부재로 진팀장 경유(A9 연동).", "owner": "디자인", "end": "", "due": "7~11월", "st": "리스크", "urgent": false, "done": false}, {"id": "C7", "cat": "브랜디드 콘텐츠", "catKey": "C", "name": "문제해결 스토리북(PDF) 제작", "cur": "표지 완료, 본문 대기", "next": "행사 후 본편 제작·배포", "note": "표지·목업 디자인 완료(6/7).", "owner": "홍보/디자인", "end": "2026.12.01", "due": "~12월초", "st": "진행중", "urgent": false, "done": false}, {"id": "D1", "cat": "광고·TM", "catKey": "D", "name": "공모전/커뮤니티 플랫폼 게시", "cur": "게시 라이브 유지", "next": "마감(8/31)까지 유지·관리", "note": "7/1~ 6곳 게시 완료: 올콘·씽굿·링커리어·요즘것들·위비티·캠퍼스픽(URL 확보).", "owner": "홍보(배움)", "end": "2026.08.31", "due": "진행중", "st": "완료", "urgent": false, "done": true}, {"id": "D2", "cat": "광고·TM", "catKey": "D", "name": "공모전·대학생 플랫폼 유료 배너 집행", "cur": "올콘 집행중·후속 순차 대기", "next": "대학내일·씽굿 순차 집행, 배너 제작 완료", "note": "올콘 7/1~7/7 라이브중, 대학내일 7/10~7/24 예약, 씽굿 7/27~8/3 확정. 언론진흥재단비 아닌 자체집행. 배너 제작은 범신사 요청.", "owner": "홍보(배움)", "end": "2026.08.03", "due": "7~8월 순차", "st": "진행중", "urgent": false, "done": false}, {"id": "D3", "cat": "광고·TM", "catKey": "D", "name": "참여 독려 TM 2명 운영", "cur": "TM 운영중", "next": "8/31까지 지속, DB 피로도 관리", "note": "전년도 TM 리스트 확보(개인정보 유의). 전화 스크립트 완성(이승헌, 7/2). 7/1(수)부터 TM 개시. 축산학과 컨택 결과 수신. 업체 문의 유입 시작(7/3).", "owner": "모집·운영(배움)", "end": "2026.08.31", "due": "진행중(~8/31)", "st": "진행중", "urgent": false, "done": false}, {"id": "D4", "cat": "광고·TM", "catKey": "D", "name": "네이버 블로그·카페 바이럴 홍보", "cur": "리스트업 완료, 축평원 컨펌 대기", "next": "컨펌 후 협업 진행(차주 월요일 재요청)", "note": "AI 네이버 블로거 3곳 문의(AI포스트 40만/리더유 15만/AI강사 회신대기), 예산 3~4명 100만원. 스펙업 등 카페 바이럴 준비.", "owner": "홍보(배움)", "end": "2026.07.13", "due": "컨펌 후", "st": "리스크", "urgent": false, "done": false}, {"id": "D5", "cat": "광고·TM", "catKey": "D", "name": "원티드·데이콘 등 게시", "cur": "", "next": "필요시 추가 게시", "note": "제안서상 계획, 실제 진행 기록 미확인.", "owner": "홍보", "end": "2026.08.15", "due": "7~8월", "st": "대기", "urgent": false, "done": false}, {"id": "D6", "cat": "광고·TM", "catKey": "D", "name": "축산학과 현수막·포스터 부착", "cur": "준비 중", "next": "대학 배포·부착", "note": "준비 중 언급(6/17).", "owner": "모집·운영", "end": "2026.08.15", "due": "7~8월", "st": "대기", "urgent": false, "done": false}, {"id": "E1", "cat": "디자인", "catKey": "E", "name": "키비주얼/메인 포스터 확정", "cur": "최종본 완료·인쇄 요청", "next": "인쇄·배포", "note": "키비주얼(AI+자물쇠 파훼+동물) 확정. 포스터 제3회 기반 다회 수정(톤 딥블루·가독성·시상규모·문의처·QR 3개). 6/19 이메일 접수 반영, 6/22 변경공고 QR 교체. 범신사 인쇄 요청.", "owner": "디자인(최보결)", "end": "", "due": "✅ 사실상 완료", "st": "완료", "urgent": false, "done": true}, {"id": "E2", "cat": "디자인", "catKey": "E", "name": "공고문 상세·QR(우수사례집/공고문/접수) 정비", "cur": "완료", "next": "", "note": "QR 3종 구성. 변경공고 QR로 교체 완료.", "owner": "디자인", "end": "", "due": "완료", "st": "완료", "urgent": false, "done": true}, {"id": "E3", "cat": "디자인", "catKey": "E", "name": "플랫폼 유료 배너 디자인", "cur": "제작 진행", "next": "순차 제작·전달", "note": "플랫폼 배너 제작 필요, 범신사 요청.", "owner": "디자인/범신사", "end": "2026.07.10", "due": "순차", "st": "진행중", "urgent": false, "done": false}, {"id": "E4", "cat": "디자인", "catKey": "E", "name": "우수사례집 표지·편집 디자인", "cur": "표지 완료", "next": "본문 편집(행사 후)", "note": "키비 계승 표지·목업 완료(6/7).", "owner": "디자인", "end": "2026.12.01", "due": "~12월초", "st": "진행중", "urgent": false, "done": false}, {"id": "E5", "cat": "디자인", "catKey": "E", "name": "X배너·현수막·리플렛·명패·비표", "cur": "", "next": "본행사 준비기 제작", "note": "제안서상 계획.", "owner": "디자인", "end": "2026.11.05", "due": "~11/5", "st": "대기", "urgent": false, "done": false}, {"id": "E6", "cat": "디자인", "catKey": "E", "name": "무대(LED)·본선 7팀 부스 디자인", "cur": "", "next": "본선 확정 후 설계", "note": "부스 수량 미확정(대관·부스 확정 후).", "owner": "디자인/기획", "end": "2026.11.05", "due": "~11/5", "st": "대기", "urgent": false, "done": false}, {"id": "E7", "cat": "디자인", "catKey": "E", "name": "포토존 디자인·설치 계획", "cur": "설치 계획 수립", "next": "현장 설치", "note": "당일(17일) 9시부터 2시간 셋팅 계획 확정.", "owner": "디자인/운영", "end": "2026.11.17", "due": "11/17 09:00", "st": "대기", "urgent": false, "done": false}, {"id": "E8", "cat": "디자인", "catKey": "E", "name": "참가/기념품 선정·디자인", "cur": "품목 검토", "next": "선정·제작", "note": "작년 스마트워치(갤럭시핏3) 참고, 올해 예산 맞춰 선정 예정.", "owner": "운영", "end": "", "due": "~10월", "st": "대기", "urgent": false, "done": false}, {"id": "F1", "cat": "모집·접수", "catKey": "F", "name": "운영사무국 구축·가동", "cur": "운영중", "next": "", "note": "킥오프·가동.", "owner": "총괄PM", "end": "", "due": "완료", "st": "완료", "urgent": false, "done": true}, {"id": "F2", "cat": "모집·접수", "catKey": "F", "name": "이메일 접수 운영(smartlivestock@ekape.or.kr)", "cur": "접수 진행(7.1~)", "next": "마감까지 접수·집계", "note": "개인정보보호법 이슈로 접수 사이트 대신 이메일 접수 확정. 마감 8.31.", "owner": "모집·운영", "end": "2026.08.31", "due": "7.1~8.31", "st": "진행중", "urgent": false, "done": false}, {"id": "F3", "cat": "모집·접수", "catKey": "F", "name": "TM/학과 컨택 DB 관리·유형 분류", "cur": "관리중", "next": "마감까지 갱신", "note": "TM 리스트·축산학과 컨택결과 관리.", "owner": "모집·운영", "end": "", "due": "상시", "st": "진행중", "urgent": false, "done": false}, {"id": "F4", "cat": "모집·접수", "catKey": "F", "name": "총 접수 60팀 목표", "cur": "유입 시작", "next": "목표 대비 관리", "note": "최종 60개팀 목표 설정. 업체 문의 유입 시작(7/3).", "owner": "총괄PM", "end": "", "due": "접수기간", "st": "진행중", "urgent": false, "done": false}, {"id": "F5", "cat": "모집·접수", "catKey": "F", "name": "1차 5명·2차 7명 섭외", "cur": "", "next": "8월 내 섭외", "note": "진행 기록 미확인.", "owner": "총괄PM", "end": "2026.08.31", "due": "~8/31", "st": "대기", "urgent": false, "done": false}, {"id": "F6", "cat": "모집·접수", "catKey": "F", "name": "마감·제출서류 검토", "cur": "", "next": "8/31~9월초", "note": "", "owner": "모집·운영", "end": "2026.08.31", "due": "8/31~", "st": "대기", "urgent": false, "done": false}, {"id": "F7", "cat": "모집·접수", "catKey": "F", "name": "통합 운영 대시보드 구축", "cur": "기획 단계", "next": "제작·연동", "note": "제안서 기반 대시보드 제작 예정(이유빈).", "owner": "기획", "end": "2026.08.15", "due": "~8월", "st": "대기", "urgent": false, "done": false}, {"id": "G1", "cat": "평가·멘토링", "catKey": "G", "name": "지정과제 멘토기업 확보·매칭", "cur": "확보·컨택 진행중", "next": "1차 후 6팀 매칭·멘토링", "note": "멘토기업 5개 확보: 아이티테크·아이온텍·코마스·길소프트·유라이크코리아(일루베이션 보류→아이온텍 교체). 이승헌 담당 메일링·컨택.", "owner": "기획(배움)", "end": "", "due": "9월 매칭", "st": "진행중", "urgent": false, "done": false}, {"id": "G2", "cat": "평가·멘토링", "catKey": "G", "name": "SW저작권 등록지원·개인정보/보안각서 제도 정리", "cur": "제도 설명자료 준비 필요", "next": "농식품부 보고용 자료 제출", "note": "SW저작권 등록지원+개인정보운영방침·보안각서(NDS) 계획. 농식품부가 상세 답변 요청 → 제도 근거·절차 설명자료 필요.", "owner": "기획/PM", "end": "2026.07.13", "due": "★즉시", "st": "리스크", "urgent": false, "done": false}, {"id": "G3", "cat": "평가·멘토링", "catKey": "G", "name": "부문별 3배수 선발", "cur": "", "next": "9월 초 시행", "note": "", "owner": "총괄PM", "end": "2026.09.05", "due": "9월초", "st": "대기", "urgent": false, "done": false}, {"id": "G4", "cat": "평가·멘토링", "catKey": "G", "name": "멘토링 3회(6주) 운영", "cur": "", "next": "9~10월 운영", "note": "", "owner": "기획", "end": "2026.10.20", "due": "9~10월", "st": "대기", "urgent": false, "done": false}, {"id": "G5", "cat": "평가·멘토링", "catKey": "G", "name": "외부 7인 심사·본선 7팀", "cur": "", "next": "10월 중순", "note": "", "owner": "총괄PM", "end": "", "due": "10월중순", "st": "대기", "urgent": false, "done": false}, {"id": "G6", "cat": "평가·멘토링", "catKey": "G", "name": "발표 PPT·코칭·리허설", "cur": "", "next": "10월말~11월초", "note": "", "owner": "기획", "end": "", "due": "10말~11초", "st": "대기", "urgent": false, "done": false}, {"id": "H1", "cat": "본행사 운영", "catKey": "H", "name": "청주 오스코 201호 대관·기본시설", "cur": "대관·견적 진행", "next": "부스 수량 확정 후 재신청", "note": "201호 16·17일 종일 대관(전날 설치+당일), LED·무대단상 신청, 임대 배움창작소 명의. 오스코 견적 회신 수령. 로비/복도 전시 3*3 1부스 하루 10만원.", "owner": "운영(배움)", "end": "", "due": "확정 진행중", "st": "진행중", "urgent": false, "done": false}, {"id": "H2", "cat": "본행사 운영", "catKey": "H", "name": "VIP 회의실 예약", "cur": "완료", "next": "의전 세부 준비", "note": "2층 VIP룸 예약 완료(7/1).", "owner": "운영", "end": "", "due": "완료", "st": "완료", "urgent": false, "done": true}, {"id": "H3", "cat": "본행사 운영", "catKey": "H", "name": "실시간 투표 플랫폼 선정·세팅", "cur": "플랫폼 선정 검토", "next": "계약·세팅·리허설", "note": "나우앤보트(대국민 최소 500명 25만원~) vs 스모어(월 40만원) 비교 검토, 나우앤보트 방향.", "owner": "기획", "end": "2026.11.13", "due": "~11/13", "st": "대기", "urgent": false, "done": false}, {"id": "H4", "cat": "본행사 운영", "catKey": "H", "name": "본선 7팀+홍보취업 부스 설치", "cur": "수량 협의", "next": "본선 후 확정·설치", "note": "부스 수량·크기 미확정(대관·본선 확정 후).", "owner": "기획/운영", "end": "2026.11.16", "due": "11/16 설치", "st": "대기", "urgent": false, "done": false}, {"id": "H5", "cat": "본행사 운영", "catKey": "H", "name": "포토존 현장 설치", "cur": "계획 확정", "next": "현장 설치", "note": "당일 9시부터 2시간 셋팅 계획.", "owner": "운영", "end": "2026.11.17", "due": "11/17", "st": "대기", "urgent": false, "done": false}, {"id": "H6", "cat": "본행사 운영", "catKey": "H", "name": "케이터링·버스 6대·기념품", "cur": "", "next": "10~11월 예약·제작", "note": "제안서상 계획(현대그린푸드/버스/기념품). 기념품은 작년 핏3 참고.", "owner": "운영", "end": "2026.11.10", "due": "~11/10", "st": "대기", "urgent": false, "done": false}, {"id": "H7", "cat": "본행사 운영", "catKey": "H", "name": "사회자·연사 섭외, VIP 의전", "cur": "", "next": "10월 섭외", "note": "", "owner": "기획/운영", "end": "", "due": "~10월", "st": "대기", "urgent": false, "done": false}, {"id": "H8", "cat": "본행사 운영", "catKey": "H", "name": "안전관리 계획·현장 리허설", "cur": "", "next": "11월 초~16일", "note": "", "owner": "안전/PM", "end": "2026.11.16", "due": "~11/16", "st": "대기", "urgent": false, "done": false}, {"id": "I1", "cat": "사후·산출물", "catKey": "I", "name": "하이라이트·기술영상·우수사례집", "cur": "", "next": "행사 후 제작·배포", "note": "우수사례집 표지 준비(E4).", "owner": "홍보", "end": "2026.12.01", "due": "~12월초", "st": "대기", "urgent": false, "done": false}, {"id": "I2", "cat": "사후·산출물", "catKey": "I", "name": "알고리즘 우수작 SW저작권 등록", "cur": "", "next": "사업기간 내 등록 지원", "note": "제도 설명 이슈(G2)와 연동.", "owner": "기획", "end": "", "due": "사업기간내", "st": "대기", "urgent": false, "done": false}, {"id": "I3", "cat": "사후·산출물", "catKey": "I", "name": "패키지사업·실증팜 연계", "cur": "", "next": "11월말~", "note": "", "owner": "총괄PM", "end": "2026.11.28", "due": "11월말~", "st": "대기", "urgent": false, "done": false}, {"id": "I4", "cat": "사후·산출물", "catKey": "I", "name": "만족도 조사·최종 결과보고서", "cur": "", "next": "행사 후~사업종료", "note": "", "owner": "성과관리/PM", "end": "2026.12.01", "due": "~12월", "st": "대기", "urgent": false, "done": false}, {"id": "J1", "cat": "운영관리·PM", "catKey": "J", "name": "착수계·수행계획서·계약", "cur": "완료", "next": "", "note": "우주씨앤디 계약 진행, 6월 중순 킥오프.", "owner": "총괄PM", "end": "", "due": "완료", "st": "완료", "urgent": false, "done": true}, {"id": "J2", "cat": "운영관리·PM", "catKey": "J", "name": "실행 홍보계획안 발주처 컨펌", "cur": "축평원 컨펌 대기", "next": "컨펌 후 확정 실행", "note": "실홍보계획안 작성(이유빈 7/2 hwpx). 파워블로거·유관협회·월간지 등 포함.", "owner": "홍보/PM", "end": "2026.07.13", "due": "컨펌 대기", "st": "리스크", "urgent": false, "done": false}, {"id": "J3", "cat": "운영관리·PM", "catKey": "J", "name": "산출내역서 최신본 관리", "cur": "관리중", "next": "변경 시 갱신", "note": "최신본(20260608 기준) 관리.", "owner": "PM", "end": "", "due": "상시", "st": "진행중", "urgent": false, "done": false}, {"id": "J4", "cat": "운영관리·PM", "catKey": "J", "name": "중간보고(8월)·주간보고(목)", "cur": "", "next": "8월 중간보고·매주 목", "note": "", "owner": "총괄PM", "end": "2026.08.15", "due": "8월/매주", "st": "대기", "urgent": false, "done": false}, {"id": "J5", "cat": "운영관리·PM", "catKey": "J", "name": "완료보고·최종 산출물 납품(5부)", "cur": "", "next": "사업 종료 시", "note": "", "owner": "총괄PM", "end": "2026.12.01", "due": "11월말~12월", "st": "대기", "urgent": false, "done": false}], BUD=[["1.인건비", "총괄 PM", 7567456], ["1.인건비", "진행관리", 13926298], ["1.인건비", "디자인관리", 2901312], ["1.인건비", "홍보관리·TM", 11605248], ["2.사전과업", "언론홍보·바이럴", 5000000], ["2.사전과업", "유료배너 광고", 10000000], ["2.사전과업", "언론진흥재단 수수료", 1000000], ["2.사전과업", "심사위원", 6000000], ["2.사전과업", "멘토 자문비", 3600000], ["2.사전과업", "멘토링 활동비", 1800000], ["2.사전과업", "본선 PPT·교육", 3000000], ["2.사전과업", "접수 사이트", 3000000], ["3.행사무대", "부스 디자인·제작", 40000000], ["3.행사무대", "전시월·포토존", 5000000], ["3.행사무대", "사회자·진행", 3000000], ["3.행사무대", "무대·조명·음향", 5000000], ["3.행사무대", "대관료", 6500000], ["3.행사무대", "연설자 강의료", 500000], ["3.행사무대", "현장 아카이빙", 2000000], ["4.행사운영", "버스·간식", 9000000], ["4.행사운영", "홍보영상 10편", 12000000], ["4.행사운영", "케이터링", 3750000], ["4.행사운영", "기념품", 5000000], ["4.행사운영", "비품·경품", 1000000], ["5.기타", "행사보험", 1000000], ["5.기타", "홍보물", 2000000], ["5.기타", "우수사례집", 3000000], ["5.기타", "예비비", 1000000]];
+
+/* ===== TM 콜현황 (별도 시트 연동) ===== */
+const TM_CFG={CSV:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQcLQJ_wbZqe0Xl9Ymevz6TsttFk_rgBXURB4IfpuTTX8BQvjKZhNKHIqG4puqkZLmib-kn0xN54vll/pub?gid=329783810&single=true&output=csv'};
+const TM_COLS=['구분','차수','기간','모수','항목','유형','건수','설명','비고'];
+const TM_FALLBACK=[
+['메타','','','','패널제목','','','TM 참여독려 콜 현황',''],
+['메타','','','','상태태그','','','2차 컨텍 완료 · 7/21 기준',''],
+['실적','1차 컨텍','7/10~7/16','1728','독려완료','독려완료','214','1차 발신 전량 완료',''],
+['실적','1차 컨텍','','','메일·문자 요청','자료요청','319','',''],
+['실적','1차 컨텍','','','부재','부재','532','',''],
+['실적','1차 컨텍','','','거절·결번 등','기타','663','',''],
+['실적','2차 컨텍','7/20~7/21','532','독려완료','독려완료','77','부재 전용 모수임에도 유효 성과 확인 — 재콜 방식의 효과성 입증',''],
+['실적','2차 컨텍','','','메일·문자 요청','자료요청','46','',''],
+['실적','2차 컨텍','','','참여거절','참여거절','77','',''],
+['실적','2차 컨텍','','','통화거절','통화거절','36','',''],
+['실적','2차 컨텍','','','2차 부재','부재','288','',''],
+['계획','','','','STEP 1 · 차주 월요일~','','','2차 부재 {잔여부재}건 우선 재콜','참여·통화 거절, 결번·오번 제외'],
+['계획','','','','STEP 2 · 수일 텀 후','','','자료요청 {참여의향}건 + 독려완료 {독려완료}건 후속 콜','수신 확인 및 접수 안내'],
+['계획','','','','STEP 3 · 3차 콜','','','참여의향 확정 집계','자료요청=의향 추정치이므로 실참여 여부 직접 확인']];
+const TMC={'독려완료':'var(--done)','자료요청':'var(--doing)','부재':'var(--wait)','참여거절':'var(--risk)','통화거절':'#e8a45c','기타':'#dfe4ea'};
+const tmMap=a=>({g:a[0],r:a[1],pd:a[2],base:num(a[3]),item:a[4],type:a[5]||a[4],n:num(a[6]),desc:a[7],memo:a[8]});
+let TMROWS=null, TMLIVE=false;
+function parseTM(rows){
+ if(!rows||!rows.length)return null;
+ const h=rows[0].map(x=>String(x||'').trim()), idx=TM_COLS.map(c=>h.indexOf(c));
+ if(idx[0]<0||idx[4]<0)return null;
+ const out=rows.slice(1).map(r=>tmMap(idx.map(i=>i>=0?String(r[i]==null?'':r[i]).trim():''))).filter(x=>x.g&&x.item);
+ return out.length?out:null;
+}
+function renderTM(){
+ const D=TMROWS||(TMROWS=TM_FALLBACK.map(tmMap)), meta={}, nf=n=>Number(n||0).toLocaleString(), pc=(a,b)=>b?(a/b*100).toFixed(1):'0.0';
+ D.filter(x=>x.g==='메타').forEach(x=>meta[x.item]=x.desc);
+ const order=[],G={};
+ D.filter(x=>x.g==='실적').forEach(x=>{if(!G[x.r]){G[x.r]=[];order.push(x.r)}G[x.r].push(x)});
+ const rounds=order.map(k=>{const L=G[k],sum=L.reduce((a,b)=>a+b.n,0);
+  const base=L.reduce((a,b)=>a||b.base,0)||sum;
+  return{k:k,base:base,pd:(L.find(x=>x.pd)||{}).pd||'',desc:(L.find(x=>x.desc)||{}).desc||'',items:L,rem:Math.max(0,base-sum)}});
+ const sumBy=t=>D.filter(x=>x.g==='실적'&&x.type===t).reduce((a,b)=>a+b.n,0);
+ const total=rounds.length?rounds[0].base:0, want=sumBy('자료요청'), push=sumBy('독려완료');
+ let left=0;for(let i=rounds.length-1;i>=0;i--){const m=rounds[i].items.filter(x=>x.type==='부재').reduce((a,b)=>a+b.n,0);if(m){left=m;break}}
+ const tok=s=>String(s==null?'':s).replace(/\{누적발신\}/g,nf(total)).replace(/\{참여의향\}/g,nf(want)).replace(/\{독려완료\}/g,nf(push)).replace(/\{잔여부재\}/g,nf(left));
+ const bold=s=>s.replace(/(\d[\d,]*(?:건|%|팀))/g,'<b>$1</b>');
+ $('tmtitle').textContent=meta['패널제목']||'TM 참여독려 콜 현황';
+ $('tmtag').textContent=[meta['상태태그']||'',TMLIVE?'':'내장 데이터'].filter(Boolean).join(' · ');
+ $('tmchips').innerHTML=`<span class="tmq">누적발신<b>${nf(total)}</b></span><span class="tmq pos">참여의향<b>${nf(want)}</b></span><span class="tmq">잔여부재<b>${nf(left)}</b></span>`;
+ $('tmkpi').innerHTML=[
+  [nf(total),(rounds[0]?rounds[0].k:'1차')+' 발신','var(--ink)',rounds[0]?rounds[0].pd:''],
+  [nf(want),'참여의향(자료요청)','var(--doing)',rounds.map(r=>r.items.filter(x=>x.type==='자료요청').reduce((a,b)=>a+b.n,0)).filter(n=>n).join(' + ')],
+  [nf(push),'독려완료 누계','var(--done)',rounds.map(r=>r.items.filter(x=>x.type==='독려완료').reduce((a,b)=>a+b.n,0)).filter(n=>n).join(' + ')],
+  [nf(left),'잔여 부재','var(--wait)','차기 재콜 대상']
+ ].map(k=>`<div><div class="n" style="color:${k[2]}">${k[0]}</div><div class="l">${esc(k[1])}</div><div class="s">${esc(k[3]||'')}</div></div>`).join('');
+ $('tmrounds').innerHTML=rounds.map(r=>{
+  const by=t=>r.items.filter(x=>x.type===t).reduce((a,b)=>a+b.n,0);
+  const miss=by('부재'), pos=by('독려완료')+by('자료요청'), rej=by('참여거절')+by('통화거절'), conn=r.base-miss;
+  const segs=r.items.filter(x=>x.n>0).map(x=>`<i style="flex:${x.n};background:${TMC[x.type]||'#dfe4ea'}" title="${esc(x.item)} ${nf(x.n)}"></i>`).join('')
+   +(r.rem>0?`<i style="flex:${r.rem};background:#c9d2dd" title="미분류 ${nf(r.rem)}"></i>`:'');
+  const lg=r.items.filter(x=>x.n>0).map(x=>`<em><i style="background:${TMC[x.type]||'#dfe4ea'}"></i>${esc(x.item)} <b>${nf(x.n)}</b></em>`).join('')
+   +(r.rem>0?`<em><i style="background:#c9d2dd"></i>미분류 <b>${nf(r.rem)}</b></em>`:'');
+  let note=(rej>0&&miss>0)
+   ?`통화연결 <b>${nf(conn)}건(${pc(conn,r.base)}%)</b> 중 긍정 반응 <b>${nf(pos)}건</b> — 연결 대비 <b>${pc(pos,conn)}%</b>, 모수 대비 <b>${pc(pos,r.base)}%</b>`
+   :`유효 반응(독려완료+자료요청) <b>${nf(pos)}건 · ${pc(pos,r.base)}%</b>`+(miss?`. 부재 <b>${nf(miss)}건</b>은 후속 재콜 모수로 이관`:'');
+  if(r.desc)note+='<br>'+bold(esc(tok(r.desc)));
+  if(r.rem>0)note+=`<br>※ 항목 합계와 모수 간 <b>${nf(r.rem)}건</b> 차이 — 분류 누락 여부 확인 필요.`;
+  return `<div class="tmp"><div class="ph"><b>${esc(r.k)}${r.pd?' ('+esc(r.pd)+')':''}</b><span>모수 ${nf(r.base)}건${(rej>0&&miss>0)?' · 연결률 '+pc(conn,r.base)+'%':''}</span></div>`
+   +`<div class="sbar">${segs}</div><div class="lg">${lg}</div><div class="tmnote">${note}</div></div>`;
+ }).join('')||'<div class="tmempty">표시할 실적 데이터가 없습니다 · 시트의 [구분=실적] 행을 확인하세요</div>';
+ $('tmsteps').innerHTML=D.filter(x=>x.g==='계획').map(x=>
+  `<div><div class="t">${esc(x.item)}</div><div class="d">${bold(esc(tok(x.desc)))}`
+  +(x.memo?`<br><span style="color:var(--mut)">${esc(tok(x.memo))}</span>`:'')+'</div></div>').join('');
+}
 const SC={'완료':'done','진행중':'doing','대기':'wait','리스크':'risk'};
 const $=i=>document.getElementById(i);
 let TASKS=[], pending={}, prevStatus={}, fCat=null, fSt=null;
@@ -184,7 +316,9 @@ async function load(showToast){
   if(showToast)toast('시트를 불러오지 못했어요');
  }
  try{if(CFG.BUDGET){const r=await fetch(CFG.BUDGET+(CFG.BUDGET.includes('?')?'&':'?')+'cb='+Date.now());if(r.ok){const rw=parseCSV(await r.text());const h=rw[0].map(x=>x.trim());const col=cs=>{for(const c of cs){const i=h.indexOf(c);if(i>=0)return i}return -1};const bi={cat:col(['구분','대분류']),item:col(['항목','내용']),plan:col(['예산','금액']),spent:col(['집행','집행액'])};const parsed=rw.slice(1).map(r=>({cat:(r[bi.cat]||'').trim(),item:(r[bi.item]||'').trim(),plan:num(r[bi.plan]),spent:num(r[bi.spent])})).filter(b=>b.item&&b.plan);if(parsed.length)BUDGET=parsed;}}}catch(e){}
- btn.classList.remove('spin');render();
+ try{if(TM_CFG.CSV){const r=await fetch(TM_CFG.CSV+(TM_CFG.CSV.includes('?')?'&':'?')+'cb='+Date.now());
+  if(r.ok){const p=parseTM(parseCSV(await r.text()));if(p){TMROWS=p;TMLIVE=true}}}}catch(e){}
+ btn.classList.remove('spin');render();renderTM();
 }
 function applyPending(){Object.keys(pending).forEach(id=>{const t=TASKS.find(x=>x.id===id);if(!t){return}
  const p=pending[id];const cur=t.done?'완료':'미완료',want=p.done?'완료':'미완료';
