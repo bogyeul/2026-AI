@@ -262,7 +262,7 @@ function renderTM(){
    ?`통화연결 <b>${nf(conn)}건(${pc(conn,r.base)}%)</b> 중 긍정 반응 <b>${nf(pos)}건</b> — 연결 대비 <b>${pc(pos,conn)}%</b>, 모수 대비 <b>${pc(pos,r.base)}%</b>`
    :`유효 반응(독려완료+자료요청) <b>${nf(pos)}건 · ${pc(pos,r.base)}%</b>`+(miss?`. 부재 <b>${nf(miss)}건</b>은 후속 재콜 모수로 이관`:'');
   if(r.desc)note+='<br>'+bold(esc(tok(r.desc)));
-  if(r.rem>0)note+=`<br>※ 항목 합계와 모수 간 <b>${nf(r.rem)}건</b> 차이 — 분류 누락 여부 확인 필요.`;
+  if(r.rem>0)note+=`<br>※ 결번·오번에 따른 항목 합계와 모수 간 <b>${nf(r.rem)}건</b> 차이.`;
   return `<div class="tmp"><div class="ph"><b>${esc(r.k)}${r.pd?' ('+esc(r.pd)+')':''}</b><span>모수 ${nf(r.base)}건${(rej>0&&miss>0)?' · 연결률 '+pc(conn,r.base)+'%':''}</span></div>`
    +`<div class="sbar">${segs}</div><div class="lg">${lg}</div><div class="tmnote">${note}</div></div>`;
  }).join('')||'<div class="tmempty">표시할 실적 데이터가 없습니다 · 시트의 [구분=실적] 행을 확인하세요</div>';
